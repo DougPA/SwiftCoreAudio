@@ -3,7 +3,6 @@
 //  CH03_CAStreamFormatTester
 //
 //  Created by Douglas Adams on 6/30/16.
-//  Copyright © 2016 Douglas Adams. All rights reserved.
 //
 
 import Foundation

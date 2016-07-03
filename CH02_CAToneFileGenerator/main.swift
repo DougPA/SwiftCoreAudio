@@ -3,7 +3,6 @@
 //  CH02_CAToneFileGenerator
 //
 //  Created by Douglas Adams on 6/29/16.
-//  Copyright © 2016 Subsequently and Furthermore, Inc. All rights reserved.
 //
 
 import Foundation

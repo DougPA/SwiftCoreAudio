@@ -3,7 +3,6 @@
 //  CH01_CAMetadata
 //
 //  Created by Douglas Adams on 6/28/16.
-//  Copyright © 2016 Douglas Adams. All rights reserved.
 //
 
 import CoreFoundation
