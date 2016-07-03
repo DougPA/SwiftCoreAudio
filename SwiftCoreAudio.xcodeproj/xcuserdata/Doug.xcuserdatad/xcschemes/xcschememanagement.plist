@@ -4,15 +4,50 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>SwiftCoreAudio.xcscheme</key>
+		<key>CH01_CAMetadata.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+		<key>CH02_CAToneFileGenerator.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>CH03_CAStreamFormatTester.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>CH04_Recorder.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>91F84E851D289A11005DF80F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>91F84E931D289A51005DF80F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>91F84E9E1D289B32005DF80F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>91F84EA91D289B9A005DF80F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>91F84EB41D289BE9005DF80F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
