@@ -14,10 +14,8 @@ class Utility {
     //
     static func codeToString(_ error: OSStatus) -> String {
         
-        let x = UInt32(bitPattern: error)
-        
         // byte swap the error
-        let errorCode = CFSwapInt32HostToBig(x)
+        let errorCode = CFSwapInt32HostToBig(UInt32(bitPattern: error))
         
         // separate the UInt32 into 4 bytes
         var bytes = [UInt8](repeating: 0, count: 4)

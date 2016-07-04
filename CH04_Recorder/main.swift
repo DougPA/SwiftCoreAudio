@@ -7,11 +7,11 @@
 
 import AudioToolbox
 
-let kNumberRecordBuffers = 3            //
+let kNumberRecordBuffers = 3            // use 3 buffers
 
 struct Recorder {                       // Struct to use in the Callback
     
-    var recordFile: AudioFileID?		// reference to your output file
+    var recordFile: AudioFileID?		// reference to the output file
     var recordPacket: Int64	= 0         // current packet index in output file
     var running = false                 // recording state
 }
@@ -46,44 +46,66 @@ func setOutputSampleRate(_ outSampleRate: UnsafeMutablePointer<Void>) -> OSStatu
     return error;
 }
 //
-// Callback function
+// Write the contents of a buffer to a file
 //
-func inputCallback(inUserData: UnsafeMutablePointer<Void>?,
-                   inQueue: AudioQueueRef,
-                   inBuffer: UnsafeMutablePointer<AudioQueueBuffer>,
-                   inStartTime: UnsafePointer<AudioTimeStamp>,
-                   inNumPackets: UInt32,
-                   inPacketDesc: UnsafePointer<AudioStreamPacketDescription>?) {
+// AudioQueueInputCallback function
+//
+//      must have the following signature:
+//          @convention(c) (UnsafeMutablePointer<Swift.Void>?,                              // Void pointer to data
+//                          AudioQueueRef,                                                  // reference to the queue
+//                          AudioQueueBufferRef,                                            // reference to the buffer (in the queue)
+//                          UnsafePointer<AudioTimeStamp>,                                  // pointer to a timestamp
+//                          UInt32,                                                         // number of packets to be written
+//                          UnsafePointer<AudioStreamPacketDescription>?) -> Swift.Void     // pointer to an array of PacketDescriptors
+//
+func inputCallback(userData: UnsafeMutablePointer<Void>?,
+                   queue: AudioQueueRef,
+                   bufferToEmpty: UnsafeMutablePointer<AudioQueueBuffer>,
+                   startTime: UnsafePointer<AudioTimeStamp>,
+                   numPackets: UInt32,
+                   packetDesc: UnsafePointer<AudioStreamPacketDescription>?) {
     
-    let recorder = UnsafeMutablePointer<Recorder>(inUserData)
+    // cast the inUserData Void pointer to a Recorder struct pointer
+    let recorder = UnsafeMutablePointer<Recorder>(userData)
     
     // if inNumPackets is greater then zero, our buffer contains audio data
     // in the format we specified (AAC)
-    if inNumPackets > 0 {
+    if numPackets > 0 {
+        
         // write packets to file
-        var ioNumPackets = inNumPackets
-        Utility.check(error: AudioFileWritePackets(recorder!.pointee.recordFile!,
-                                                   false,
-                                                   inBuffer.pointee.mAudioDataByteSize,
-                                                   inPacketDesc,
-                                                   recorder!.pointee.recordPacket,
-                                                   &ioNumPackets,
-                                                   inBuffer.pointee.mAudioData),
+        var ioNumPackets = numPackets
+        Utility.check(error: AudioFileWritePackets(recorder!.pointee.recordFile!,               // AudioFileID
+                                                   false,                                       // use cache?
+                                                   bufferToEmpty.pointee.mAudioDataByteSize,    // number of bytes to be written
+                                                   packetDesc,                                  // pointer to an array of PacketDescriptors
+                                                   recorder!.pointee.recordPacket,              // index of first packet to be written
+                                                   &ioNumPackets,                               // number of packets to be written
+                                                   bufferToEmpty.pointee.mAudioData),           // buffer of audio to be written
                       operation: "AudioFileWritePackets failed")
         
         // increment packet index
-        recorder!.pointee.recordPacket = recorder!.pointee.recordPacket + Int(inNumPackets)
+        recorder!.pointee.recordPacket = recorder!.pointee.recordPacket + Int(numPackets)
     }
     
     // if we're not stopping, re-enqueue the buffer so that it gets filled again
     if recorder!.pointee.running {
-        Utility.check(error: AudioQueueEnqueueBuffer(inQueue, inBuffer, 0, nil), operation: "AudioQueueEnqueueBuffer failed")
+        Utility.check(error: AudioQueueEnqueueBuffer(queue,                                     // queue
+                                                     bufferToEmpty,                             // buffer to enqueue
+                                                     0,                                         // always 0 for recording
+                                                     nil),                                      // always nil for recording
+                      operation: "AudioQueueEnqueueBuffer failed")
     }
 }
+
+//--------------------------------------------------------------------------------------------------
+// MARK: Properties
 
 var recorder = Recorder()                                               // Callback struct
 var recordFormat = AudioStreamBasicDescription()                        // ASBD
 var error: OSStatus = noErr                                             // error code
+
+//--------------------------------------------------------------------------------------------------
+// MARK: Main
 
 // Configure the output data format to be AAC
 recordFormat.mFormatID = kAudioFormatMPEG4AAC
@@ -108,14 +130,14 @@ Utility.check(error: AudioFormatGetProperty(kAudioFormatProperty_FormatInfo,
 
 // create an input (recording) queue
 var queue: AudioQueueRef?
-Utility.check(error: AudioQueueNewInput(&recordFormat,                  // asbd
-    inputCallback,                  // callback
-    &recorder,                      // user data
-    nil,                            // run loop
-    nil,                            // run loop mode
-    0,                              // flags
-    &queue),                        // input queue
-    operation: "AudioQueueNewInput failed")
+Utility.check(error: AudioQueueNewInput(&recordFormat,                  // ASBD
+                                        inputCallback,                  // callback function
+                                        &recorder,                      // user data
+                                        nil,                            // run loop
+                                        nil,                            // run loop mode
+                                        0,                              // flags (always 0)
+                                        &queue),                        // input queue
+              operation: "AudioQueueNewInput failed")
 
 // since the queue is now initilized, we ask it's Audio Converter object
 // for the ASBD it has configured itself with. The file may require a more
@@ -136,11 +158,11 @@ guard let fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, "./output
     // unable to create file
     exit(-1)
 }
-Utility.check(error: AudioFileCreateWithURL(fileURL,
-                                            kAudioFileCAFType,
-                                            &recordFormat,
-                                            .eraseFile,
-                                            &recorder.recordFile),
+Utility.check(error: AudioFileCreateWithURL(fileURL,                        // file URL
+                                            kAudioFileCAFType,              // type of file (CAF)
+                                            &recordFormat,                  // pointer to an AudioStreamBasicDescription
+                                            .eraseFile,                     // erase
+                                            &recorder.recordFile),          // AudioFileID
               operation: "AudioFileCreateWithURL failed")
 
 Swift.print("\(fileURL)")
@@ -189,6 +211,7 @@ Utility.check(error: AudioQueueStop(queue!, true),
 // so reapply it to the file now
 Utility.applyEncoderCookie(fromQueue: queue!, toFile: recorder.recordFile!)
 
+// cleanup
 AudioQueueDispose(queue!, true)
 AudioFileClose(recorder.recordFile!)
 

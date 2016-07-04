@@ -8,6 +8,9 @@
 import CoreFoundation
 import AudioToolbox
 
+//--------------------------------------------------------------------------------------------------
+// MARK: Main
+
 if Process.arguments.count < 2 {
     Swift.print("Usage: CAMetadata /full/path/to/audiofile\n")
     exit(-1)

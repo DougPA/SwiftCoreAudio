@@ -8,18 +8,14 @@
 import CoreFoundation
 import AudioToolbox
 
-let kPlaybackFileLocation = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/Doug/x.mp3", CFStringBuiltInEncodings.UTF8.rawValue)
+//--------------------------------------------------------------------------------------------------
+// MARK: Global Constants
 
-//#define kPlaybackFileLocation	CFSTR("/Users/cadamson/Library/Developer/Xcode/DerivedData/CH04_Recorder-dvninfofohfiwcgyndnhzarhsipp/Build/Products/Debug/output.caf")
-//#define kPlaybackFileLocation	CFSTR("/Users/cadamson/audiofile.m4a")
-//#define kPlaybackFileLocation	CFSTR("/Volumes/Sephiroth/iTunes/iTunes Media/Music/The Tubes/Tubes World Tour 2001/Wild Women of Wongo.m4p")
-//#define kPlaybackFileLocation	CFSTR("/Volumes/Sephiroth/iTunes/iTunes Media/Music/Compilations/ESCAFLOWNE - ORIGINAL MOVIE SOUNDTRACK/21 We're flying.m4a")
+let kMaxBufferSize: UInt32 = 0x10000                                        // limit size to 64K
+let kMinBufferSize: UInt32 = 0x4000                                         // limit size to 16K
 
-
-let kNumberPlaybackBuffers = 3
-
-let kMaxBufferSize: UInt32 = 0x10000                    // limit size to 64K
-let kMinBufferSize: UInt32 = 0x4000                     // limit size to 16K
+//--------------------------------------------------------------------------------------------------
+// MARK: Global Struct
 
 struct Player {
     var playbackFile: AudioFileID?                                          // reference to your output file
@@ -29,14 +25,18 @@ struct Player {
     var isDone = false                                                      // playback has completed
 }
 
+//--------------------------------------------------------------------------------------------------
+// MARK: Supporting methods
+
+//
 // we only use time here as a guideline
-// we're really trying to get somewhere between 16K and 64K buffers, but not allocate too much if we don't need it
+// we're really trying to get somewhere between kMinBufferSize and kMaxBufferSize buffers, but not allocate too much if we don't need it
+//
 func CalculateBytesForTime (inAudioFile: AudioFileID,
                             inDesc: AudioStreamBasicDescription,
                             inSeconds: Double,
                             outBufferSize: UnsafeMutablePointer<UInt32>,
-                            outNumPackets: UnsafeMutablePointer<UInt32>)
-{
+                            outNumPackets: UnsafeMutablePointer<UInt32>) {
     
     // we need to calculate how many packets we read at a time, and how big a buffer we need.
     // we base this on the size of the packets in the file and an approximate duration for each buffer.
@@ -79,43 +79,50 @@ func CalculateBytesForTime (inAudioFile: AudioFileID,
     outNumPackets.pointee = outBufferSize.pointee / maxPacketSize
 }
 //
+// Read bytes from a file into a buffer
 //
+// AudioQueueOutputCallback function
 //
-func outputCallback(inUserData: UnsafeMutablePointer<Void>?, inAQ: AudioQueueRef, inCompleteAQBuffer: AudioQueueBufferRef) {
+//      must have the following signature:
+//          @convention(c) (UnsafeMutablePointer<Swift.Void>?,                      // Void pointer to data
+//                          AudioQueueRef,                                          // reference to the quque
+//                          AudioQueueBufferRef) -> Swift.Void                      // reference to the buffer in the queue
+//
+func outputCallback(userData: UnsafeMutablePointer<Void>?, queue: AudioQueueRef, bufferToFill: AudioQueueBufferRef) {
 
-    if let player = UnsafeMutablePointer<Player>(inUserData) {
+    if let player = UnsafeMutablePointer<Player>(userData) {
         
         if player.pointee.isDone { return }
         
         // read audio data from file into supplied buffer
-        var numBytes: UInt32 = inCompleteAQBuffer.pointee.mAudioDataBytesCapacity
+        var numBytes: UInt32 = bufferToFill.pointee.mAudioDataBytesCapacity
         var nPackets = player.pointee.numPacketsToRead
         
-        Utility.check(error: AudioFileReadPacketData(player.pointee.playbackFile!,
-                                                     false,
-                                                     &numBytes,
-                                                     player.pointee.packetDescs,
-                                                     player.pointee.packetPosition,
-                                                     &nPackets,
-                                                     inCompleteAQBuffer.pointee.mAudioData),
+        Utility.check(error: AudioFileReadPacketData(player.pointee.playbackFile!,              // AudioFileID
+                                                     false,                                     // use cache?
+                                                     &numBytes,                                 // initially - buffer capacity, after - bytes actually read
+                                                     player.pointee.packetDescs,                // pointer to an array of PacketDescriptors
+                                                     player.pointee.packetPosition,             // index of first packet to be read
+                                                     &nPackets,                                 // number of packets
+                                                     bufferToFill.pointee.mAudioData),          // output buffer
                       operation: "AudioFileReadPacketData failed")
 
         // enqueue buffer into the Audio Queue
         // if nPackets == 0 it means we are EOF (all data has been read from file)
         if nPackets > 0 {
-            inCompleteAQBuffer.pointee.mAudioDataByteSize = numBytes
+            bufferToFill.pointee.mAudioDataByteSize = numBytes
             
-            Utility.check(error: AudioQueueEnqueueBuffer(inAQ,
-                                                         inCompleteAQBuffer,
-                                                         (player.pointee.packetDescs == nil ? 0 : nPackets),
-                                                         player.pointee.packetDescs),
+            Utility.check(error: AudioQueueEnqueueBuffer(queue,                                                 // queue
+                                                         bufferToFill,                                          // buffer to enqueue
+                                                         (player.pointee.packetDescs == nil ? 0 : nPackets),    // number of packet descriptions
+                                                         player.pointee.packetDescs),                           // pointer to a PacketDescriptions array
                           operation: "AudioQueueEnqueueBuffer failed")
             
             player.pointee.packetPosition += Int64(nPackets)
             
         } else {
             
-            Utility.check(error: AudioQueueStop(inAQ, false),
+            Utility.check(error: AudioQueueStop(queue, false),
                           operation: "AudioQueueStop failed")
             
             player.pointee.isDone = true
@@ -124,83 +131,101 @@ func outputCallback(inUserData: UnsafeMutablePointer<Void>?, inAQ: AudioQueueRef
 }
 
 //--------------------------------------------------------------------------------------------------
+// MARK: Constants
+
+let kPlaybackFileLocation = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/Doug/x.mp3", CFStringBuiltInEncodings.UTF8.rawValue)
+
+//#define kPlaybackFileLocation	CFSTR("/Users/cadamson/Library/Developer/Xcode/DerivedData/CH04_Recorder-dvninfofohfiwcgyndnhzarhsipp/Build/Products/Debug/output.caf")
+//#define kPlaybackFileLocation	CFSTR("/Users/cadamson/audiofile.m4a")
+//#define kPlaybackFileLocation	CFSTR("/Volumes/Sephiroth/iTunes/iTunes Media/Music/The Tubes/Tubes World Tour 2001/Wild Women of Wongo.m4p")
+//#define kPlaybackFileLocation	CFSTR("/Volumes/Sephiroth/iTunes/iTunes Media/Music/Compilations/ESCAFLOWNE - ORIGINAL MOVIE SOUNDTRACK/21 We're flying.m4a")
+
+let kNumberPlaybackBuffers = 3
+
+//--------------------------------------------------------------------------------------------------
 // MARK: Main
 
 var player = Player()
     
 let fileURL: CFURL  = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, kPlaybackFileLocation, .cfurlposixPathStyle, false)
 
-    // open the audio file
-Utility.check(error: AudioFileOpenURL(fileURL,
-                                      .readPermission,
-                                      0,
-                                      &player.playbackFile),
+// open the audio file, set the playbackFile property in the player struct
+Utility.check(error: AudioFileOpenURL(fileURL,                              // file URL to open
+                                      .readPermission,                      // open to read
+                                      0,                                    // hint
+                                      &player.playbackFile),                // set on output to the AudioFileID
               operation: "AudioFileOpenURL failed")
 
 
 // get the audio data format from the file
 var dataFormat = AudioStreamBasicDescription()
 var propSize = UInt32(sizeof(AudioStreamBasicDescription))
-
-Utility.check(error: AudioFileGetProperty(player.playbackFile!,
-                                          kAudioFilePropertyDataFormat,
-                                          &propSize,
-                                          &dataFormat),
+Utility.check(error: AudioFileGetProperty(player.playbackFile!,             // AudioFileID
+                                          kAudioFilePropertyDataFormat,     // desired property
+                                          &propSize,                        // size of the property
+                                          &dataFormat),                     // set on output to the ASBD
               operation: "couldn't get file's data format");
     
 // create an output (playback) queue
 var queue: AudioQueueRef?
-Utility.check(error: AudioQueueNewOutput(&dataFormat,
-                                         outputCallback,
-                                         &player,
-                                         nil,
-                                         nil,
-                                         0,
-                                         &queue),
+Utility.check(error: AudioQueueNewOutput(&dataFormat,                       // pointer to the ASBD
+                                         outputCallback,                    // callback function
+                                         &player,                           // pointer to the player struct
+                                         nil,                               // run loop
+                                         nil,                               // run loop mode
+                                         0,                                 // flags (always 0)
+                                         &queue),                           // pointer to the queue
               operation: "AudioQueueNewOutput failed");
     
     
-    // adjust buffer size to represent about a half second (0.5) of audio based on this format
+// adjust buffer size to represent about a half second (0.5) of audio based on this format
 var bufferByteSize: UInt32 = 0
-
 CalculateBytesForTime(inAudioFile: player.playbackFile!, inDesc: dataFormat,  inSeconds: 0.5, outBufferSize: &bufferByteSize, outNumPackets: &player.numPacketsToRead)
 
-// check if we are dealing with a VBR file. ASBDs for VBR files always have
+// check if we are dealing with a variable-bit-rate file. ASBDs for VBR files always have
 // mBytesPerPacket and mFramesPerPacket as 0 since they can fluctuate at any time.
 // If we are dealing with a VBR file, we allocate memory to hold the packet descriptions
-let isFormatVBR = (dataFormat.mBytesPerPacket == 0 || dataFormat.mFramesPerPacket == 0);
-
-if isFormatVBR {
+if (dataFormat.mBytesPerPacket == 0 || dataFormat.mFramesPerPacket == 0) {
+    
+    // variable bit rate formats
     player.packetDescs = UnsafeMutablePointer<AudioStreamPacketDescription>(malloc(sizeof(AudioStreamPacketDescription) * Int(player.numPacketsToRead)))
+
 } else {
-    player.packetDescs = nil; // we don't provide packet descriptions for constant bit rate formats (like linear PCM)
+    
+    // constant bit rate formats (we don't provide packet descriptions, e.g linear PCM)
+    player.packetDescs = nil;
 }
 
 // get magic cookie from file and set on queue
 Utility.applyEncoderCookie(fromFile: player.playbackFile!, toQueue: queue!)
 
-// allocate the buffers and prime the queue with some data before starting
+// allocate the buffers
 var buffers = [AudioQueueBufferRef?](repeating: nil, count: kNumberPlaybackBuffers)
 
 player.isDone = false
 player.packetPosition = 0
 
+// prime the queue with some data before starting
 for i in 0..<kNumberPlaybackBuffers where !player.isDone {
-        Utility.check(error: AudioQueueAllocateBuffer(queue!,
-                                                      bufferByteSize,
-                                                      &buffers[i]),
-                      operation: "AudioQueueAllocateBuffer failed");
-        
-        // manually invoke callback to fill buffers with data
-        outputCallback(inUserData: &player, inAQ: queue!, inCompleteAQBuffer: buffers[i]!)
+    
+    // allocate a buffer of the specified size in the given queue
+    //      places an AudioQueueBufferRef in the buffers array
+    Utility.check(error: AudioQueueAllocateBuffer(queue!,                               // AudioQueueRef
+                                                  bufferByteSize,                       // number of bytes to allocate
+                                                  &buffers[i]),                         // on output contains an AudioQueueBufferRef
+                  operation: "AudioQueueAllocateBuffer failed")
+    
+    // manually invoke callback to fill buffers with data
+    outputCallback(userData: &player, queue: queue!, bufferToFill: buffers[i]!)
 }
 
 // start the queue. this function returns immedatly and begins
 // invoking the callback, as needed, asynchronously.
-Utility.check(error: AudioQueueStart(queue!, nil), operation: "AudioQueueStart failed");
+Utility.check(error: AudioQueueStart(queue!, nil), operation: "AudioQueueStart failed")
+
+Swift.print("Playing...\n");
 
 // and wait
-Swift.print("Playing...\n");
 repeat
 {
     CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.25, false)
@@ -215,6 +240,7 @@ CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 2, false)
 player.isDone = true
 Utility.check(error: AudioQueueStop(queue!, true), operation: "AudioQueueStop failed");
 
+// cleanup
 AudioQueueDispose(queue!, true)
 AudioFileClose(player.playbackFile!)
 
