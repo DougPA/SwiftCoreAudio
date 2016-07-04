@@ -12,6 +12,8 @@
 		91F84EAD1D289B9A005DF80F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84EAC1D289B9A005DF80F /* main.swift */; };
 		91F84EB81D289BE9005DF80F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84EB71D289BE9005DF80F /* main.swift */; };
 		91F84EBD1D289C21005DF80F /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84EBC1D289C21005DF80F /* Utility.swift */; };
+		91F84EC51D294CE2005DF80F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84EC41D294CE2005DF80F /* main.swift */; };
+		91F84ECA1D294E97005DF80F /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84EC91D294E97005DF80F /* Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +53,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		91F84EC01D294CE2005DF80F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +74,9 @@
 		91F84EB51D289BE9005DF80F /* CH04_Recorder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH04_Recorder; sourceTree = BUILT_PRODUCTS_DIR; };
 		91F84EB71D289BE9005DF80F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		91F84EBC1D289C21005DF80F /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		91F84EC21D294CE2005DF80F /* CH05_Player */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH05_Player; sourceTree = BUILT_PRODUCTS_DIR; };
+		91F84EC41D294CE2005DF80F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		91F84EC91D294E97005DF80F /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +108,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		91F84EBF1D294CE2005DF80F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -104,6 +125,7 @@
 				91F84EA01D289B32005DF80F /* CH02_CAToneFileGenerator */,
 				91F84EAB1D289B9A005DF80F /* CH03_CAStreamFormatTester */,
 				91F84EB61D289BE9005DF80F /* CH04_Recorder */,
+				91F84EC31D294CE2005DF80F /* CH05_Player */,
 				91F84E871D289A11005DF80F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -115,6 +137,7 @@
 				91F84E9F1D289B32005DF80F /* CH02_CAToneFileGenerator */,
 				91F84EAA1D289B9A005DF80F /* CH03_CAStreamFormatTester */,
 				91F84EB51D289BE9005DF80F /* CH04_Recorder */,
+				91F84EC21D294CE2005DF80F /* CH05_Player */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +173,15 @@
 				91F84EB71D289BE9005DF80F /* main.swift */,
 			);
 			path = CH04_Recorder;
+			sourceTree = "<group>";
+		};
+		91F84EC31D294CE2005DF80F /* CH05_Player */ = {
+			isa = PBXGroup;
+			children = (
+				91F84EC91D294E97005DF80F /* Utility.swift */,
+				91F84EC41D294CE2005DF80F /* main.swift */,
+			);
+			path = CH05_Player;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,6 +255,23 @@
 			productReference = 91F84EB51D289BE9005DF80F /* CH04_Recorder */;
 			productType = "com.apple.product-type.tool";
 		};
+		91F84EC11D294CE2005DF80F /* CH05_Player */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91F84EC81D294CE2005DF80F /* Build configuration list for PBXNativeTarget "CH05_Player" */;
+			buildPhases = (
+				91F84EBE1D294CE2005DF80F /* Sources */,
+				91F84EBF1D294CE2005DF80F /* Frameworks */,
+				91F84EC01D294CE2005DF80F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CH05_Player;
+			productName = CH05_Player;
+			productReference = 91F84EC21D294CE2005DF80F /* CH05_Player */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -257,6 +306,12 @@
 						DevelopmentTeamName = "Douglas Adams";
 						ProvisioningStyle = Automatic;
 					};
+					91F84EC11D294CE2005DF80F = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = EE5B8TYXGA;
+						DevelopmentTeamName = "Douglas Adams";
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 91F84E811D289A11005DF80F /* Build configuration list for PBXProject "SwiftCoreAudio" */;
@@ -275,6 +330,7 @@
 				91F84E9E1D289B32005DF80F /* CH02_CAToneFileGenerator */,
 				91F84EA91D289B9A005DF80F /* CH03_CAStreamFormatTester */,
 				91F84EB41D289BE9005DF80F /* CH04_Recorder */,
+				91F84EC11D294CE2005DF80F /* CH05_Player */,
 			);
 		};
 /* End PBXProject section */
@@ -310,6 +366,15 @@
 			files = (
 				91F84EBD1D289C21005DF80F /* Utility.swift in Sources */,
 				91F84EB81D289BE9005DF80F /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91F84EBE1D294CE2005DF80F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91F84ECA1D294E97005DF80F /* Utility.swift in Sources */,
+				91F84EC51D294CE2005DF80F /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,6 +521,20 @@
 			};
 			name = Release;
 		};
+		91F84EC61D294CE2005DF80F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		91F84EC71D294CE2005DF80F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -475,6 +554,7 @@
 				91F84E9A1D289A51005DF80F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		91F84EA31D289B32005DF80F /* Build configuration list for PBXNativeTarget "CH02_CAToneFileGenerator" */ = {
 			isa = XCConfigurationList;
@@ -483,6 +563,7 @@
 				91F84EA51D289B32005DF80F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		91F84EAE1D289B9A005DF80F /* Build configuration list for PBXNativeTarget "CH03_CAStreamFormatTester" */ = {
 			isa = XCConfigurationList;
@@ -491,12 +572,22 @@
 				91F84EB01D289B9A005DF80F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		91F84EB91D289BE9005DF80F /* Build configuration list for PBXNativeTarget "CH04_Recorder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				91F84EBA1D289BE9005DF80F /* Debug */,
 				91F84EBB1D289BE9005DF80F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91F84EC81D294CE2005DF80F /* Build configuration list for PBXNativeTarget "CH05_Player" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91F84EC61D294CE2005DF80F /* Debug */,
+				91F84EC71D294CE2005DF80F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
