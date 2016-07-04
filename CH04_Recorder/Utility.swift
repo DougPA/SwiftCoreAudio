@@ -12,26 +12,31 @@ class Utility {
     //
     // convert a Core Audio error code to a printable string
     //
-    static func codeToString(_ errorCode: UInt32) -> String {
+    static func codeToString(_ error: OSStatus) -> String {
+        
+        let x = UInt32(bitPattern: error)
+        
+        // byte swap the error
+        let errorCode = CFSwapInt32HostToBig(x)
         
         // separate the UInt32 into 4 bytes
-        var x = [UInt8](repeating: 0, count: 4)
-        x[0] = UInt8(errorCode & 0x000000ff)
-        x[1] = UInt8( (errorCode & 0x0000ff00) >> 8)
-        x[2] = UInt8( (errorCode & 0x00ff0000) >> 16)
-        x[3] = UInt8( (errorCode & 0xff000000) >> 24)
+        var bytes = [UInt8](repeating: 0, count: 4)
+        bytes[0] = UInt8(errorCode & 0x000000ff)
+        bytes[1] = UInt8( (errorCode & 0x0000ff00) >> 8)
+        bytes[2] = UInt8( (errorCode & 0x00ff0000) >> 16)
+        bytes[3] = UInt8( (errorCode & 0xff000000) >> 24)
         
         // do the four bytes all represent printable characters?
-        if isprint(Int32(x[0])) != 0 && isprint(Int32(x[1])) != 0 &&
-            isprint(Int32(x[2])) != 0 && isprint(Int32(x[3])) != 0 {
+        if isprint(Int32(bytes[0])) != 0 && isprint(Int32(bytes[1])) != 0 &&
+            isprint(Int32(bytes[2])) != 0 && isprint(Int32(bytes[3])) != 0 {
             
             // YES, return a String made from them
-            return String(bytes: x, encoding: String.Encoding.ascii)!
-        
+            return String(bytes: bytes, encoding: String.Encoding.ascii)!
+            
         } else {
             
             // NO, treat the UInt32 as a number and create a String of the number
-            return String(format: "%0x", errorCode)
+            return String(format: "%d", error)
         }
     }
     //
@@ -42,11 +47,8 @@ class Utility {
         // return if no error
         if error == noErr { return }
         
-        // byte swap the error
-        let errorCode = CFSwapInt32HostToBig(UInt32(error))
-
         // print either four characters or the numeric value
-        Swift.print("Error: \(operation), returned: \(codeToString(errorCode))")
+        Swift.print("Error: \(operation), returned: \(codeToString(error))")
         
         // terminate the program
         exit(1)
