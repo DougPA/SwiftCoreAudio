@@ -69,17 +69,30 @@ func audioConverterCallback(inAudioConverter: AudioConverterRef,
             settings.pointee.sourceBuffer = nil
         }
 
-        settings.pointee.sourceBuffer = calloc(1, Int(ioDataPacketCount.pointee * settings.pointee.inputFilePacketMaxSize))
     
-        var outByteCount: UInt32  = 0
-        var result = AudioFileReadPackets(settings.pointee.inputFile!,
-                                          true,
-                                          &outByteCount,
-                                          settings.pointee.inputFilePacketDescriptions,
-                                          Int64(settings.pointee.inputFilePacketIndex),
-                                          ioDataPacketCount,
-                                          settings.pointee.sourceBuffer)
+        var outByteCount: UInt32  = ioDataPacketCount.pointee * settings.pointee.inputFilePacketMaxSize
+        settings.pointee.sourceBuffer = calloc(1, Int(outByteCount))
+
+//
+// MARK: Deprecated
+//
+//        var result = AudioFileReadPackets(settings.pointee.inputFile!,
+//                                          true,
+//                                          &outByteCount,
+//                                          settings.pointee.inputFilePacketDescriptions,
+//                                          Int64(settings.pointee.inputFilePacketIndex),
+//                                          ioDataPacketCount,
+//                                          settings.pointee.sourceBuffer)
     
+        var result = AudioFileReadPacketData(settings.pointee.inputFile!,                       // AudioFileID
+                                             true,                                              // use cache?
+                                             &outByteCount,                                     // initially - buffer capacity, after - bytes actually read
+                                             settings.pointee.inputFilePacketDescriptions,      // pointer to an array of PacketDescriptors
+                                             Int64(settings.pointee.inputFilePacketIndex),      // index of first packet to be read
+                                             ioDataPacketCount,                                 // number of packets
+                                             settings.pointee.sourceBuffer)                     // output buffer
+        
+        
         // it's not an error if we just read the remainder of the file
         if result == kAudioFileEndOfFileError && (ioDataPacketCount.pointee > 0) {
             result = noErr
