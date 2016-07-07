@@ -23,9 +23,6 @@ struct AudioConverterSettings
     var inputFilePacketCount: UInt64 = 0                            // total number of packts in input file
     var inputFilePacketMaxSize: UInt32 = 0                          // maximum size a packet in the input file can be
     var inputFilePacketDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?  // array of packet descriptions for read buffer
-    
-    // KEVIN: sourceBuffer is never used outside of the callback. why couldn't it be a local there?
-    var sourceBuffer: UnsafeMutablePointer<Void>?                   //
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -64,33 +61,16 @@ func audioConverterCallback(inAudioConverter: AudioConverterRef,
         
         if ioDataPacketCount.pointee == 0 { return noErr }
     
-        if settings.pointee.sourceBuffer != nil {
-            free(settings.pointee.sourceBuffer)
-            settings.pointee.sourceBuffer = nil
-        }
-
-    
         var outByteCount: UInt32  = ioDataPacketCount.pointee * settings.pointee.inputFilePacketMaxSize
-        settings.pointee.sourceBuffer = calloc(1, Int(outByteCount))
+        let sourceBuffer = calloc(1, Int(outByteCount))
 
-//
-// MARK: Deprecated
-//
-//        var result = AudioFileReadPackets(settings.pointee.inputFile!,
-//                                          true,
-//                                          &outByteCount,
-//                                          settings.pointee.inputFilePacketDescriptions,
-//                                          Int64(settings.pointee.inputFilePacketIndex),
-//                                          ioDataPacketCount,
-//                                          settings.pointee.sourceBuffer)
-    
         var result = AudioFileReadPacketData(settings.pointee.inputFile!,                       // AudioFileID
                                              true,                                              // use cache?
                                              &outByteCount,                                     // initially - buffer capacity, after - bytes actually read
                                              settings.pointee.inputFilePacketDescriptions,      // pointer to an array of PacketDescriptors
                                              Int64(settings.pointee.inputFilePacketIndex),      // index of first packet to be read
                                              ioDataPacketCount,                                 // number of packets
-                                             settings.pointee.sourceBuffer)                     // output buffer
+                                             sourceBuffer)                     // output buffer
         
         
         // it's not an error if we just read the remainder of the file
@@ -100,20 +80,7 @@ func audioConverterCallback(inAudioConverter: AudioConverterRef,
     
         settings.pointee.inputFilePacketIndex += UInt64(ioDataPacketCount.pointee)
         
-    
-        // KEVIN: in "// initialize in case of failure", we assumed there was only 1
-        // buffer (since we set it up ourselves in Convert()). so why be careful to
-        // iterate over potentially multiple buffers here?
-        /*
-         UInt32 bufferIndex;
-         for (bufferIndex = 0; bufferIndex < ioData->mNumberBuffers; bufferIndex++)
-         {
-         ioData->mBuffers[bufferIndex].mData = audioConverterSettings->sourceBuffer;
-         ioData->mBuffers[bufferIndex].mDataByteSize = outByteCount;
-         }
-         */
-        // chris' hacky asssume-one-buffer equivalent
-        ioData.pointee.mBuffers.mData = settings.pointee.sourceBuffer
+        ioData.pointee.mBuffers.mData = sourceBuffer
         ioData.pointee.mBuffers.mDataByteSize = outByteCount
 
         outDataPacketDescription?.pointee = settings.pointee.inputFilePacketDescriptions
@@ -185,7 +152,6 @@ func audioConverterCallback(inAudioConverter: AudioConverterRef,
                                                         settings.pointee.inputFilePacketDescriptions)
             
             if error != noErr || ioOutputDataPackets == 0  {
-                //		fprintf(stderr, "err: %ld, packets: %ld\n", err, ioOutputDataPackets);
                 break;	// this is our termination condition
             }
             
@@ -270,7 +236,7 @@ Utility.check(error: AudioFileCreateWithURL(outputFileURL,
                                             &audioConverterSettings.outputFile),
               operation: "AudioFileCreateWithURL failed");
 
-Swift.print(stdout, "Converting...\n")
+Swift.print("Converting...\n")
 
 Convert(settings: &audioConverterSettings)
 
