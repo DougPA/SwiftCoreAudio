@@ -7,24 +7,21 @@
 
 import AudioToolbox
 
-let sineFrequency = 880.0
+
+//--------------------------------------------------------------------------------------------------
+// MARK: Constants
+
+let kSampleRate = 44100.0
+let kSineFrequency = 880.0
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Global Struct
 
 struct SineWavePlayer
 {
-    var outputUnit: AudioUnit?
-    var startingFrameCount: Double = 0.0
+    var outputUnit: AudioUnit?                              // pointer to a ComponentInstanceRecord
+    var startingFrameCount: Double = 0.0                    // current frame count
 }
-
-//OSStatus SineWaveRenderProc(void *inRefCon,
-//                            AudioUnitRenderActionFlags *ioActionFlags,
-//                            const AudioTimeStamp *inTimeStamp,
-//                            UInt32 inBusNumber,
-//                            UInt32 inNumberFrames,
-//                            AudioBufferList * ioData);
-//void CreateAndConnectOutputUnit (MySineWavePlayer *player) ;
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Supporting methods
@@ -39,28 +36,28 @@ struct SineWavePlayer
 //                          UInt32,                                                         // number of frames required
 //                          UnsafeMutablePointer<AudioBufferList>?) -> OSStatus             // pointer to the AudioBufferList
 //
-func SineWaveRenderProc(inRefCon: UnsafeMutablePointer<Void>,
-                        ioActionFlags: UnsafeMutablePointer<AudioUnitRenderActionFlags>,
-                        inTimeStamp: UnsafePointer<AudioTimeStamp>,
-                        inBusNumber: UInt32,
-                        inNumberFrames: UInt32,
-                        ioData: UnsafeMutablePointer<AudioBufferList>?) -> OSStatus
+func SineWaveRenderProc(userData: UnsafeMutablePointer<Void>,
+                        actionFlags: UnsafeMutablePointer<AudioUnitRenderActionFlags>,
+                        timeStamp: UnsafePointer<AudioTimeStamp>,
+                        busNumber: UInt32,
+                        numberOfFrames: UInt32,
+                        bufferList: UnsafeMutablePointer<AudioBufferList>?) -> OSStatus
 {
     //	printf ("SineWaveRenderProc needs %ld frames at %f\n", inNumberFrames, CFAbsoluteTimeGetCurrent());
     
-    let player = UnsafeMutablePointer<SineWavePlayer>(inRefCon)
+    let player = UnsafeMutablePointer<SineWavePlayer>(userData)
     
     var j: Double = player.pointee.startingFrameCount
     //	double cycleLength = 44100. / 2200./*frequency*/;
-    let cycleLength: Double  = 44100 / sineFrequency
-    for frame in 0..<Int(inNumberFrames)
+    let cycleLength: Double  = kSampleRate / kSineFrequency
+    for frame in 0..<Int(numberOfFrames)
     {
-        if let ioData = ioData {
+        if let bufferList = bufferList {
             
-            let channels = UnsafeMutablePointer<Float32>(ioData.pointee.mBuffers.mData)!
+            let channels = UnsafeMutablePointer<Float32>(bufferList.pointee.mBuffers.mData)!
             
-            let left = UnsafeMutableBufferPointer<Float32>(start: channels, count: Int(inNumberFrames))
-            let right = UnsafeMutableBufferPointer<Float32>(start: channels.advanced(by: Int(inNumberFrames)), count: Int(inNumberFrames))
+            let left = UnsafeMutableBufferPointer<Float32>(start: channels, count: Int(numberOfFrames))
+            let right = UnsafeMutableBufferPointer<Float32>(start: channels.advanced(by: Int(numberOfFrames)), count: Int(numberOfFrames))
             
             // copy to right channel too
             left[frame] = Float32(sin (2 * M_PI * (j / cycleLength)))
@@ -78,12 +75,12 @@ func SineWaveRenderProc(inRefCon: UnsafeMutablePointer<Void>,
 func CreateAndConnectOutputUnit (player: UnsafeMutablePointer<SineWavePlayer>) {
     
     //  10.6 and later: generate description that will match out output device (speakers)
-    var outputcd = AudioComponentDescription()
-    outputcd.componentType = kAudioUnitType_Output
-    outputcd.componentSubType = kAudioUnitSubType_DefaultOutput
-    outputcd.componentManufacturer = kAudioUnitManufacturer_Apple
+    var outputCd = AudioComponentDescription()
+    outputCd.componentType = kAudioUnitType_Output
+    outputCd.componentSubType = kAudioUnitSubType_DefaultOutput
+    outputCd.componentManufacturer = kAudioUnitManufacturer_Apple
     
-    guard let component = AudioComponentFindNext(nil, &outputcd) else {
+    guard let component = AudioComponentFindNext(nil, &outputCd) else {
         Swift.print("can't get output unit")
         exit(-1)
     }
@@ -126,6 +123,7 @@ Swift.print("playing\n")
 // play for 5 seconds
 sleep(5)
 
+// cleanup
 AudioOutputUnitStop(player.outputUnit!)
 AudioUnitUninitialize(player.outputUnit!)
 AudioComponentInstanceDispose(player.outputUnit!)

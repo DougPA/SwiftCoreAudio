@@ -13,17 +13,17 @@ import CoreServices
 
 struct AudioConverterSettings
 {
-    var inputFormat = AudioStreamBasicDescription()                 // input file's data stream description
-    var outputFormat = AudioStreamBasicDescription()                // output file's data stream description
+    var inputFormat = AudioStreamBasicDescription()                 // input file's AudioStreamBasicDescription
+    var outputFormat = AudioStreamBasicDescription()                // output file's AudioStreamBasicDescription
     
-    var inputFile: AudioFileID?                                     // reference to your input file
-    var outputFile: AudioFileID?                                    // reference to your output file
+    var inputFile: AudioFileID?                                     // Opaque pointer to the input file's AudioFileID
+    var outputFile: AudioFileID?                                    // Opaque pointer to the output file's AudioFileID
     
     var inputFilePacketIndex: UInt64 = 0                            // current packet index in input file
     var inputFilePacketCount: UInt64 = 0                            // total number of packts in input file
     var inputFilePacketMaxSize: UInt32 = 0                          // maximum size a packet in the input file can be
     var inputFilePacketDescriptions:
-                UnsafeMutablePointer<AudioStreamPacketDescription>? // array of packet descriptions for read buffer
+                UnsafeMutablePointer<AudioStreamPacketDescription>? // pointer to an array of AudioStreamPacketDescriptions for read buffer
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -35,51 +35,50 @@ struct AudioConverterSettings
 // AudioConverterComplexInputDataProc function
 //
 //      must have the following signature:
-//          @convention(c) (AudioConverterRef,                                                          // in - reference to the Converter
-//                          UnsafeMutablePointer<UInt32>,                                               // io - packet count
-//                          UnsafeMutablePointer<AudioBufferList>,                                      // io - audio buffer list
-//                          UnsafeMutablePointer<UnsafeMutablePointer<AudioStreamPacketDescription>?>?, // out - AudioStreamPacketDescription(s)
-//                          UnsafeMutablePointer<Swift.Void>?) -> OSStatus                              // in - AudioConverterSettings
+//          @convention(c) (AudioConverterRef,                                                          // reference to the Converter
+//                          UnsafeMutablePointer<UInt32>,                                               // pointer to a UInt32 packet count
+//                          UnsafeMutablePointer<AudioBufferList>,                                      // pointer to an AudioBufferList
+//                          UnsafeMutablePointer<UnsafeMutablePointer<AudioStreamPacketDescription>?>?, // pointer to a pointer to AudioStreamPacketDescription(s)
+//                          UnsafeMutablePointer<Swift.Void>?) -> OSStatus                              // Void pointer to the AudioConverterSettings struct
 //
 
-func audioConverterCallback(inAudioConverter: AudioConverterRef,
-                            ioDataPacketCount: UnsafeMutablePointer<UInt32>,
-                            ioData: UnsafeMutablePointer<AudioBufferList>,
-                            outDataPacketDescription: UnsafeMutablePointer<UnsafeMutablePointer<AudioStreamPacketDescription>?>?,
-                            inUserData: UnsafeMutablePointer<Void>?) -> OSStatus {
+func audioConverterCallback(audioConverter: AudioConverterRef,
+                            packetCount: UnsafeMutablePointer<UInt32>,
+                            bufferList: UnsafeMutablePointer<AudioBufferList>,
+                            packetDescriptions: UnsafeMutablePointer<UnsafeMutablePointer<AudioStreamPacketDescription>?>?,
+                            userData: UnsafeMutablePointer<Void>?) -> OSStatus {
     
     // cast the inUserData Void pointer to an AudioConverterSettings struct pointer
-    if let settings = UnsafeMutablePointer<AudioConverterSettings>(inUserData) {
+    if let settings = UnsafeMutablePointer<AudioConverterSettings>(userData) {
         
         // initialize in case of failure (there will be only one buffer in the AudioBufferList)
-        ioData.pointee.mBuffers.mData = nil
-        ioData.pointee.mBuffers.mDataByteSize = 0
+        bufferList.pointee.mBuffers.mData = nil
+        bufferList.pointee.mBuffers.mDataByteSize = 0
         
         // are there enough packets to satisfy request?
-        if settings.pointee.inputFilePacketIndex + UInt64(ioDataPacketCount.pointee) > settings.pointee.inputFilePacketCount {
+        if settings.pointee.inputFilePacketIndex + UInt64(packetCount.pointee) > settings.pointee.inputFilePacketCount {
             
             // YES
-            ioDataPacketCount.pointee = UInt32(settings.pointee.inputFilePacketCount - settings.pointee.inputFilePacketIndex)
+            packetCount.pointee = UInt32(settings.pointee.inputFilePacketCount - settings.pointee.inputFilePacketIndex)
         }
         // return if no packets available
-        if ioDataPacketCount.pointee == 0 { return noErr }
+        if packetCount.pointee == 0 { return noErr }
         
         // calculate the intended size & allocate a buffer
-        var outByteCount: UInt32  = ioDataPacketCount.pointee * settings.pointee.inputFilePacketMaxSize
+        var outByteCount: UInt32  = packetCount.pointee * settings.pointee.inputFilePacketMaxSize
         let sourceBuffer = calloc(1, Int(outByteCount))
         
         // read packets into the buffer
         var result = AudioFileReadPacketData(settings.pointee.inputFile!,                       // AudioFileID
-            true,                                              // use cache?
-            &outByteCount,                                     // initially - buffer capacity, after - bytes actually read
-            settings.pointee.inputFilePacketDescriptions,      // pointer to an array of PacketDescriptors
-            Int64(settings.pointee.inputFilePacketIndex),      // index of first packet to be read
-            ioDataPacketCount,                                 // number of packets
-            sourceBuffer)                                      // output buffer
-        
+                                             true,                                              // use cache?
+                                             &outByteCount,                                     // initially - buffer capacity, after - bytes actually read
+                                             settings.pointee.inputFilePacketDescriptions,      // pointer to an array of PacketDescriptors
+                                             Int64(settings.pointee.inputFilePacketIndex),      // index of first packet to be read
+                                             packetCount,                                       // number of packets
+                                             sourceBuffer)                                      // output buffer
         
         // did we just read the remainder of the file?
-        if result == kAudioFileEndOfFileError && (ioDataPacketCount.pointee > 0) {
+        if result == kAudioFileEndOfFileError && (packetCount.pointee > 0) {
             
             // YES, it's not an error
             result = noErr
@@ -90,14 +89,14 @@ func audioConverterCallback(inAudioConverter: AudioConverterRef,
             return result
         }
         // update the position in the file
-        settings.pointee.inputFilePacketIndex += UInt64(ioDataPacketCount.pointee)
+        settings.pointee.inputFilePacketIndex += UInt64(packetCount.pointee)
         
         // capture the data and byte count
-        ioData.pointee.mBuffers.mData = sourceBuffer
-        ioData.pointee.mBuffers.mDataByteSize = outByteCount
+        bufferList.pointee.mBuffers.mData = sourceBuffer
+        bufferList.pointee.mBuffers.mDataByteSize = outByteCount
         
         // copy over the PacketDescriptors
-        outDataPacketDescription?.pointee = settings.pointee.inputFilePacketDescriptions
+        packetDescriptions?.pointee = settings.pointee.inputFilePacketDescriptions
         
         return result
     }

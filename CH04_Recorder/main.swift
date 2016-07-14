@@ -54,9 +54,9 @@ func setOutputSampleRate(_ outSampleRate: UnsafeMutablePointer<Void>) -> OSStatu
 //          @convention(c) (UnsafeMutablePointer<Swift.Void>?,                              // Void pointer to data
 //                          AudioQueueRef,                                                  // reference to the queue
 //                          AudioQueueBufferRef,                                            // reference to the buffer (in the queue)
-//                          UnsafePointer<AudioTimeStamp>,                                  // pointer to a timestamp
+//                          UnsafePointer<AudioTimeStamp>,                                  // pointer to an AudioTimeStamp
 //                          UInt32,                                                         // number of packets to be written
-//                          UnsafePointer<AudioStreamPacketDescription>?) -> Swift.Void     // pointer to an array of PacketDescriptors
+//                          UnsafePointer<AudioStreamPacketDescription>?) -> Swift.Void     // pointer to an array of AudioStreamPacketDescription
 //
 func inputCallback(userData: UnsafeMutablePointer<Void>?,
                    queue: AudioQueueRef,

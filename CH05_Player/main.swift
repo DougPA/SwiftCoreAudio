@@ -84,7 +84,7 @@ func CalculateBytesForTime (inAudioFile: AudioFileID,
 // AudioQueueOutputCallback function
 //
 //      must have the following signature:
-//          @convention(c) (UnsafeMutablePointer<Swift.Void>?,                      // Void pointer to data
+//          @convention(c) (UnsafeMutablePointer<Swift.Void>?,                      // Void pointer to Player struct
 //                          AudioQueueRef,                                          // reference to the queue
 //                          AudioQueueBufferRef) -> Swift.Void                      // reference to the buffer in the queue
 //

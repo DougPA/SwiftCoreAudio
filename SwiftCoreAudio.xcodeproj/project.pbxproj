@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		917D95B21D37D1C200DB2893 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D95B11D37D1C200DB2893 /* Utility.swift */; };
+		91C3214A1D37D054004D3C65 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C321491D37D054004D3C65 /* main.swift */; };
 		91DC7D951D2BF6C2007F5110 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DC7D941D2BF6C2007F5110 /* main.swift */; };
 		91DC7D9A1D2BF90E007F5110 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DC7D991D2BF90E007F5110 /* Utility.swift */; };
+		91E53AE11D36DB030024222A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E53AE01D36DB030024222A /* main.swift */; };
+		91E53AE61D36DF3E0024222A /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E53AE51D36DF3E0024222A /* Utility.swift */; };
 		91F84E971D289A51005DF80F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84E961D289A51005DF80F /* main.swift */; };
 		91F84EA21D289B32005DF80F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84EA11D289B32005DF80F /* main.swift */; };
 		91F84EAD1D289B9A005DF80F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84EAC1D289B9A005DF80F /* main.swift */; };
@@ -19,7 +23,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		91C321451D37D054004D3C65 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		91DC7D901D2BF6C2007F5110 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		91E53ADC1D36DB030024222A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -76,9 +98,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		917D95B11D37D1C200DB2893 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		91C321471D37D054004D3C65 /* CH07_AUGraphPlayer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH07_AUGraphPlayer; sourceTree = BUILT_PRODUCTS_DIR; };
+		91C321491D37D054004D3C65 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		91DC7D921D2BF6C2007F5110 /* CH06_AudioConverter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH06_AudioConverter; sourceTree = BUILT_PRODUCTS_DIR; };
 		91DC7D941D2BF6C2007F5110 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		91DC7D991D2BF90E007F5110 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		91E53ADE1D36DB030024222A /* CH07_AUGraphSineWave */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH07_AUGraphSineWave; sourceTree = BUILT_PRODUCTS_DIR; };
+		91E53AE01D36DB030024222A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		91E53AE51D36DF3E0024222A /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		91F84E941D289A51005DF80F /* CH01_CAMetadata */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH01_CAMetadata; sourceTree = BUILT_PRODUCTS_DIR; };
 		91F84E961D289A51005DF80F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		91F84E9F1D289B32005DF80F /* CH02_CAToneFileGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH02_CAToneFileGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,7 +122,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		91C321441D37D054004D3C65 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		91DC7D8F1D2BF6C2007F5110 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91E53ADB1D36DB030024222A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -139,6 +181,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		91C321481D37D054004D3C65 /* CH07_AUGraphPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				917D95B11D37D1C200DB2893 /* Utility.swift */,
+				91C321491D37D054004D3C65 /* main.swift */,
+			);
+			path = CH07_AUGraphPlayer;
+			sourceTree = "<group>";
+		};
 		91DC7D931D2BF6C2007F5110 /* CH06_AudioConverter */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +197,15 @@
 				91DC7D941D2BF6C2007F5110 /* main.swift */,
 			);
 			path = CH06_AudioConverter;
+			sourceTree = "<group>";
+		};
+		91E53ADF1D36DB030024222A /* CH07_AUGraphSineWave */ = {
+			isa = PBXGroup;
+			children = (
+				91E53AE51D36DF3E0024222A /* Utility.swift */,
+				91E53AE01D36DB030024222A /* main.swift */,
+			);
+			path = CH07_AUGraphSineWave;
 			sourceTree = "<group>";
 		};
 		91F84E7D1D289A11005DF80F = {
@@ -157,6 +217,8 @@
 				91F84EB61D289BE9005DF80F /* CH04_Recorder */,
 				91F84EC31D294CE2005DF80F /* CH05_Player */,
 				91DC7D931D2BF6C2007F5110 /* CH06_AudioConverter */,
+				91C321481D37D054004D3C65 /* CH07_AUGraphPlayer */,
+				91E53ADF1D36DB030024222A /* CH07_AUGraphSineWave */,
 				91F84E871D289A11005DF80F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -170,6 +232,8 @@
 				91F84EB51D289BE9005DF80F /* CH04_Recorder */,
 				91F84EC21D294CE2005DF80F /* CH05_Player */,
 				91DC7D921D2BF6C2007F5110 /* CH06_AudioConverter */,
+				91E53ADE1D36DB030024222A /* CH07_AUGraphSineWave */,
+				91C321471D37D054004D3C65 /* CH07_AUGraphPlayer */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -219,6 +283,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		91C321461D37D054004D3C65 /* CH07_AUGraphPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91C3214D1D37D054004D3C65 /* Build configuration list for PBXNativeTarget "CH07_AUGraphPlayer" */;
+			buildPhases = (
+				91C321431D37D054004D3C65 /* Sources */,
+				91C321441D37D054004D3C65 /* Frameworks */,
+				91C321451D37D054004D3C65 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CH07_AUGraphPlayer;
+			productName = CH07_AUGraphPlayer;
+			productReference = 91C321471D37D054004D3C65 /* CH07_AUGraphPlayer */;
+			productType = "com.apple.product-type.tool";
+		};
 		91DC7D911D2BF6C2007F5110 /* CH06_AudioConverter */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 91DC7D981D2BF6C2007F5110 /* Build configuration list for PBXNativeTarget "CH06_AudioConverter" */;
@@ -234,6 +315,23 @@
 			name = CH06_AudioConverter;
 			productName = CH06_AudioConverter;
 			productReference = 91DC7D921D2BF6C2007F5110 /* CH06_AudioConverter */;
+			productType = "com.apple.product-type.tool";
+		};
+		91E53ADD1D36DB030024222A /* CH07_AUGraphSineWave */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91E53AE41D36DB030024222A /* Build configuration list for PBXNativeTarget "CH07_AUGraphSineWave" */;
+			buildPhases = (
+				91E53ADA1D36DB030024222A /* Sources */,
+				91E53ADB1D36DB030024222A /* Frameworks */,
+				91E53ADC1D36DB030024222A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CH07_AUGraphSineWave;
+			productName = CH07_AUGraphSineWave;
+			productReference = 91E53ADE1D36DB030024222A /* CH07_AUGraphSineWave */;
 			productType = "com.apple.product-type.tool";
 		};
 		91F84E931D289A51005DF80F /* CH01_CAMetadata */ = {
@@ -331,7 +429,19 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Douglas Adams";
 				TargetAttributes = {
+					91C321461D37D054004D3C65 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = EE5B8TYXGA;
+						DevelopmentTeamName = "Douglas Adams";
+						ProvisioningStyle = Automatic;
+					};
 					91DC7D911D2BF6C2007F5110 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = EE5B8TYXGA;
+						DevelopmentTeamName = "Douglas Adams";
+						ProvisioningStyle = Automatic;
+					};
+					91E53ADD1D36DB030024222A = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = EE5B8TYXGA;
 						DevelopmentTeamName = "Douglas Adams";
@@ -387,17 +497,37 @@
 				91F84EB41D289BE9005DF80F /* CH04_Recorder */,
 				91F84EC11D294CE2005DF80F /* CH05_Player */,
 				91DC7D911D2BF6C2007F5110 /* CH06_AudioConverter */,
+				91E53ADD1D36DB030024222A /* CH07_AUGraphSineWave */,
+				91C321461D37D054004D3C65 /* CH07_AUGraphPlayer */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		91C321431D37D054004D3C65 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				917D95B21D37D1C200DB2893 /* Utility.swift in Sources */,
+				91C3214A1D37D054004D3C65 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		91DC7D8E1D2BF6C2007F5110 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				91DC7D9A1D2BF90E007F5110 /* Utility.swift in Sources */,
 				91DC7D951D2BF6C2007F5110 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91E53ADA1D36DB030024222A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91E53AE61D36DF3E0024222A /* Utility.swift in Sources */,
+				91E53AE11D36DB030024222A /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +576,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		91C3214B1D37D054004D3C65 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		91C3214C1D37D054004D3C65 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		91DC7D961D2BF6C2007F5110 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -454,6 +598,20 @@
 			name = Debug;
 		};
 		91DC7D971D2BF6C2007F5110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		91E53AE21D36DB030024222A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		91E53AE31D36DB030024222A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -617,6 +775,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		91C3214D1D37D054004D3C65 /* Build configuration list for PBXNativeTarget "CH07_AUGraphPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91C3214B1D37D054004D3C65 /* Debug */,
+				91C3214C1D37D054004D3C65 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		91DC7D981D2BF6C2007F5110 /* Build configuration list for PBXNativeTarget "CH06_AudioConverter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -624,6 +791,16 @@
 				91DC7D971D2BF6C2007F5110 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91E53AE41D36DB030024222A /* Build configuration list for PBXNativeTarget "CH07_AUGraphSineWave" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91E53AE21D36DB030024222A /* Debug */,
+				91E53AE31D36DB030024222A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		91F84E811D289A11005DF80F /* Build configuration list for PBXProject "SwiftCoreAudio" */ = {
 			isa = XCConfigurationList;
