@@ -9,13 +9,7 @@ import CoreFoundation
 import AudioToolbox
 
 //--------------------------------------------------------------------------------------------------
-// MARK: Global Constants
-
-let kMaxBufferSize: UInt32 = 0x10000                                        // limit size to 64K
-let kMinBufferSize: UInt32 = 0x4000                                         // limit size to 16K
-
-//--------------------------------------------------------------------------------------------------
-// MARK: Global Struct
+// MARK: Struct definition
 
 struct Player {
     var playbackFile: AudioFileID?                                          // reference to your output file
@@ -38,6 +32,9 @@ func CalculateBytesForTime (inAudioFile: AudioFileID,
                             outBufferSize: UnsafeMutablePointer<UInt32>,
                             outNumPackets: UnsafeMutablePointer<UInt32>) {
     
+    let kMaxBufferSize: UInt32 = 0x10000                                        // limit size to 64K
+    let kMinBufferSize: UInt32 = 0x4000                                         // limit size to 16K
+
     // we need to calculate how many packets we read at a time, and how big a buffer we need.
     // we base this on the size of the packets in the file and an approximate duration for each buffer.
     //
@@ -131,7 +128,7 @@ func outputCallback(userData: UnsafeMutablePointer<Void>?, queue: AudioQueueRef,
 }
 
 //--------------------------------------------------------------------------------------------------
-// MARK: Constants
+// MARK: Properties
 
 let kPlaybackFileLocation = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/Doug/x.mp3", CFStringBuiltInEncodings.UTF8.rawValue)
 

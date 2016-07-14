@@ -7,6 +7,10 @@
 
 import AudioToolbox
 
+
+//
+// NOTE: This is needed because (apparently) the initializer for ScheduledAudioFileRegion is currently missing in Swift 3
+//
 public extension ScheduledAudioFileRegion {
     
     init(mTimeStamp: AudioTimeStamp, mCompletionProc: ScheduledAudioFileRegionCompletionProc?, mCompletionProcUserData: UnsafeMutablePointer<Void>?, mAudioFile: OpaquePointer, mLoopCount: UInt32, mStartFrame: Int64, mFramesToPlay: UInt32) {
@@ -22,13 +26,12 @@ public extension ScheduledAudioFileRegion {
 }
 
 //--------------------------------------------------------------------------------------------------
-// MARK: Global Struct
+// MARK: Struct definition
 
 struct AUGraphPlayer
 {
-    var inputFormat = AudioStreamBasicDescription()  // input file's data stream description
+    var inputFormat = AudioStreamBasicDescription() // input file's data stream description
     var inputFile: AudioFileID?                     // Opaque pointer to the input file's AudioFileID
-    
     var graph: AUGraph?                             // Opaque pointer to the AUGraph
     var fileAU: AudioUnit?                          // pointer to a ComponentInstanceRecord
 }
@@ -36,6 +39,9 @@ struct AUGraphPlayer
 //--------------------------------------------------------------------------------------------------
 // MARK: Supporting methods
 
+//
+// create and setup the AUGraph
+//
 func CreateAUGraph(player: UnsafeMutablePointer<AUGraphPlayer>)
 {
     // create a new AUGraph
@@ -91,7 +97,9 @@ func CreateAUGraph(player: UnsafeMutablePointer<AUGraphPlayer>)
     Utility.check( error: AUGraphInitialize(player.pointee.graph!),
                operation: "AUGraphInitialize failed")
 }
-
+//
+// configure the Player
+//
 func PrepareFileAU(player: UnsafeMutablePointer<AUGraphPlayer>) -> Double
 {
     
@@ -138,10 +146,6 @@ func PrepareFileAU(player: UnsafeMutablePointer<AUGraphPlayer>) -> Double
     
     // tell the file player AU when to start playing (-1 sample time means next render cycle)
     var startTime = AudioTimeStamp(mSampleTime: -1, mHostTime: 0, mRateScalar: 0, mWordClockTime: 0, mSMPTETime: SMPTETime(), mFlags: .sampleTimeValid, mReserved: 0)
-//    var startTime: AudioTimeStamp
-//    memset (&startTime, 0, sizeof(startTime))
-//    startTime.mFlags = kAudioTimeStampSampleTimeValid
-//    startTime.mSampleTime = -1
     Utility.check( error: AudioUnitSetProperty(player.pointee.fileAU!,
                                                kAudioUnitProperty_ScheduleStartTimeStamp,
                                                kAudioUnitScope_Global,
@@ -155,7 +159,7 @@ func PrepareFileAU(player: UnsafeMutablePointer<AUGraphPlayer>) -> Double
 }
 
 //--------------------------------------------------------------------------------------------------
-// MARK: Constants
+// MARK: Properties
 
 let kInputFileLocation = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/Doug/x.mp3", CFStringBuiltInEncodings.UTF8.rawValue)
 

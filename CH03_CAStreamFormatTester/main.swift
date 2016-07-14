@@ -8,6 +8,9 @@
 import Foundation
 import AudioToolbox
 
+//--------------------------------------------------------------------------------------------------
+// MARK: Supporting methods
+
 //
 // convert a formatId to a String
 //
@@ -21,6 +24,9 @@ func idToString(_ formatId: UInt32) -> String {
     
     return String(bytes: x, encoding: String.Encoding.utf8)!
 }
+
+//--------------------------------------------------------------------------------------------------
+// MARK: Main
 
 // create and populate an Audio File Type And FormatID struct
 var fileTypeAndFormat = AudioFileTypeAndFormatID()

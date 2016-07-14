@@ -9,16 +9,14 @@ import AudioToolbox
 import CoreServices
 
 //--------------------------------------------------------------------------------------------------
-// MARK: Global Struct
+// MARK: Struct definition
 
 struct AudioConverterSettings
 {
     var inputFormat = AudioStreamBasicDescription()                 // input file's AudioStreamBasicDescription
     var outputFormat = AudioStreamBasicDescription()                // output file's AudioStreamBasicDescription
-    
     var inputFile: AudioFileID?                                     // Opaque pointer to the input file's AudioFileID
     var outputFile: AudioFileID?                                    // Opaque pointer to the output file's AudioFileID
-    
     var inputFilePacketIndex: UInt64 = 0                            // current packet index in input file
     var inputFilePacketCount: UInt64 = 0                            // total number of packts in input file
     var inputFilePacketMaxSize: UInt32 = 0                          // maximum size a packet in the input file can be
@@ -197,7 +195,7 @@ func audioConverterCallback(audioConverter: AudioConverterRef,
 }
 
 //--------------------------------------------------------------------------------------------------
-// MARK: Constants
+// MARK: Properties
 
 let kInputFileLocation = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/Doug/x.mp3", CFStringBuiltInEncodings.UTF8.rawValue)
 

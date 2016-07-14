@@ -9,19 +9,21 @@ import CoreFoundation
 import AudioToolbox
 
 //--------------------------------------------------------------------------------------------------
-// MARK: Main
-
-if Process.arguments.count < 2 {
-    Swift.print("Usage: CAMetadata /full/path/to/audiofile\n")
-    exit(-1)
-}
-
+// MARK: Properties
 
 var audioFile: AudioFileID?
 var theErr: OSStatus = noErr
 var dictionarySize: UInt32 = 0
 var isWritable: UInt32 = 0
 var dictionary: CFDictionary = [:]
+
+//--------------------------------------------------------------------------------------------------
+// MARK: Main
+
+if Process.arguments.count < 2 {
+    Swift.print("Usage: CAMetadata /full/path/to/audiofile\n")
+    exit(-1)
+}
 
 let audioFilePath = (Process.arguments[1] as NSString).expandingTildeInPath
 

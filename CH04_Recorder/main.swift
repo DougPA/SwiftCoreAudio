@@ -7,7 +7,8 @@
 
 import AudioToolbox
 
-let kNumberRecordBuffers = 3            // use 3 buffers
+//--------------------------------------------------------------------------------------------------
+// MARK: Struct definition
 
 struct Recorder {                       // Struct to use in the Callback
     
@@ -15,6 +16,10 @@ struct Recorder {                       // Struct to use in the Callback
     var recordPacket: Int64	= 0         // current packet index in output file
     var running = false                 // recording state
 }
+
+//--------------------------------------------------------------------------------------------------
+// MARK: Supporting methods
+
 //
 // set the output sample rate to be the same as the default input Device
 //
@@ -104,6 +109,8 @@ var recorder = Recorder()                                               // Callb
 var recordFormat = AudioStreamBasicDescription()                        // ASBD
 var error: OSStatus = noErr                                             // error code
 
+let kNumberRecordBuffers = 3                                            // use 3 buffers
+
 //--------------------------------------------------------------------------------------------------
 // MARK: Main
 
@@ -158,11 +165,11 @@ guard let fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, "./output
     // unable to create file
     exit(-1)
 }
-Utility.check(error: AudioFileCreateWithURL(fileURL,                        // file URL
-                                            kAudioFileCAFType,              // type of file (CAF)
-                                            &recordFormat,                  // pointer to an AudioStreamBasicDescription
-                                            .eraseFile,                     // erase
-                                            &recorder.recordFile),          // AudioFileID
+Utility.check(error: AudioFileCreateWithURL(fileURL,                     // file URL
+                                            kAudioFileCAFType,           // type of file (CAF)
+                                            &recordFormat,               // pointer to an AudioStreamBasicDescription
+                                            .eraseFile,                  // erase
+                                            &recorder.recordFile),       // AudioFileID
               operation: "AudioFileCreateWithURL failed")
 
 Swift.print("\(fileURL)")
