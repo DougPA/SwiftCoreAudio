@@ -1,6 +1,6 @@
 //
 //  Utility.swift
-//  CH06_Recorder
+//  CH06_AudioConverter
 //
 //  Created by Douglas Adams on 6/30/16.
 //

@@ -103,7 +103,7 @@ func CreateAndConnectOutputUnit (player: UnsafeMutablePointer<SineWavePlayer>) {
                                     kAudioUnitScope_Input,
                                     0,
                                     &renderCallback,
-                                    UInt32(sizeof(AURenderCallbackStruct))),
+                                    UInt32(sizeof(AURenderCallbackStruct.self))),
                   operation: "AudioUnitSetProperty failed")
     
     // initialize unit
