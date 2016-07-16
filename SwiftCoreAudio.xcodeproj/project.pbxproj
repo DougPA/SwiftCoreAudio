@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9160BE0F1D38419F00742CB9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE0E1D38419E00742CB9 /* main.swift */; };
 		9160BE141D3945F300742CB9 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE131D3945F300742CB9 /* Utility.swift */; };
+		9160BE1C1D39C09D00742CB9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE1B1D39C09D00742CB9 /* main.swift */; };
+		9160BE211D39C1D100742CB9 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE201D39C1D100742CB9 /* Utility.swift */; };
 		917D95B21D37D1C200DB2893 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D95B11D37D1C200DB2893 /* Utility.swift */; };
 		91C3214A1D37D054004D3C65 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C321491D37D054004D3C65 /* main.swift */; };
 		91DC7D951D2BF6C2007F5110 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DC7D941D2BF6C2007F5110 /* main.swift */; };
@@ -26,6 +28,15 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		9160BE0A1D38419E00742CB9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		9160BE171D39C09D00742CB9 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -112,6 +123,9 @@
 		9160BE0C1D38419E00742CB9 /* CH07_AUGraphSpeechSynthesis */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH07_AUGraphSpeechSynthesis; sourceTree = BUILT_PRODUCTS_DIR; };
 		9160BE0E1D38419E00742CB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9160BE131D3945F300742CB9 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		9160BE191D39C09D00742CB9 /* CH06_ExtAudioFileConverter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH06_ExtAudioFileConverter; sourceTree = BUILT_PRODUCTS_DIR; };
+		9160BE1B1D39C09D00742CB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		9160BE201D39C1D100742CB9 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		917D95B11D37D1C200DB2893 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		91C321471D37D054004D3C65 /* CH07_AUGraphPlayer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH07_AUGraphPlayer; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C321491D37D054004D3C65 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -137,6 +151,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		9160BE091D38419E00742CB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9160BE161D39C09D00742CB9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -211,6 +232,15 @@
 			path = CH07_AUGraphSpeechSynthesis;
 			sourceTree = "<group>";
 		};
+		9160BE1A1D39C09D00742CB9 /* CH06_ExtAudioFileConverter */ = {
+			isa = PBXGroup;
+			children = (
+				9160BE201D39C1D100742CB9 /* Utility.swift */,
+				9160BE1B1D39C09D00742CB9 /* main.swift */,
+			);
+			path = CH06_ExtAudioFileConverter;
+			sourceTree = "<group>";
+		};
 		91C321481D37D054004D3C65 /* CH07_AUGraphPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +277,7 @@
 				91F84EB61D289BE9005DF80F /* CH04_Recorder */,
 				91F84EC31D294CE2005DF80F /* CH05_Player */,
 				91DC7D931D2BF6C2007F5110 /* CH06_AudioConverter */,
+				9160BE1A1D39C09D00742CB9 /* CH06_ExtAudioFileConverter */,
 				91C321481D37D054004D3C65 /* CH07_AUGraphPlayer */,
 				91E53ADF1D36DB030024222A /* CH07_AUGraphSineWave */,
 				9160BE0D1D38419E00742CB9 /* CH07_AUGraphSpeechSynthesis */,
@@ -266,6 +297,7 @@
 				91E53ADE1D36DB030024222A /* CH07_AUGraphSineWave */,
 				91C321471D37D054004D3C65 /* CH07_AUGraphPlayer */,
 				9160BE0C1D38419E00742CB9 /* CH07_AUGraphSpeechSynthesis */,
+				9160BE191D39C09D00742CB9 /* CH06_ExtAudioFileConverter */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -330,6 +362,23 @@
 			name = CH07_AUGraphSpeechSynthesis;
 			productName = CH07_AUGraphSpeechSynthesis;
 			productReference = 9160BE0C1D38419E00742CB9 /* CH07_AUGraphSpeechSynthesis */;
+			productType = "com.apple.product-type.tool";
+		};
+		9160BE181D39C09D00742CB9 /* CH06_ExtAudioFileConverter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9160BE1D1D39C09D00742CB9 /* Build configuration list for PBXNativeTarget "CH06_ExtAudioFileConverter" */;
+			buildPhases = (
+				9160BE151D39C09D00742CB9 /* Sources */,
+				9160BE161D39C09D00742CB9 /* Frameworks */,
+				9160BE171D39C09D00742CB9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CH06_ExtAudioFileConverter;
+			productName = CH06_ExtAudioFileConverter;
+			productReference = 9160BE191D39C09D00742CB9 /* CH06_ExtAudioFileConverter */;
 			productType = "com.apple.product-type.tool";
 		};
 		91C321461D37D054004D3C65 /* CH07_AUGraphPlayer */ = {
@@ -484,6 +533,12 @@
 						DevelopmentTeamName = "Douglas Adams";
 						ProvisioningStyle = Automatic;
 					};
+					9160BE181D39C09D00742CB9 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = EE5B8TYXGA;
+						DevelopmentTeamName = "Douglas Adams";
+						ProvisioningStyle = Automatic;
+					};
 					91C321461D37D054004D3C65 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = EE5B8TYXGA;
@@ -555,6 +610,7 @@
 				91E53ADD1D36DB030024222A /* CH07_AUGraphSineWave */,
 				91C321461D37D054004D3C65 /* CH07_AUGraphPlayer */,
 				9160BE0B1D38419E00742CB9 /* CH07_AUGraphSpeechSynthesis */,
+				9160BE181D39C09D00742CB9 /* CH06_ExtAudioFileConverter */,
 			);
 		};
 /* End PBXProject section */
@@ -566,6 +622,15 @@
 			files = (
 				9160BE141D3945F300742CB9 /* Utility.swift in Sources */,
 				9160BE0F1D38419F00742CB9 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9160BE151D39C09D00742CB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9160BE211D39C1D100742CB9 /* Utility.swift in Sources */,
+				9160BE1C1D39C09D00742CB9 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,6 +714,20 @@
 			name = Debug;
 		};
 		9160BE111D38419F00742CB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		9160BE1E1D39C09D00742CB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9160BE1F1D39C09D00742CB9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -859,6 +938,14 @@
 			buildConfigurations = (
 				9160BE101D38419F00742CB9 /* Debug */,
 				9160BE111D38419F00742CB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9160BE1D1D39C09D00742CB9 /* Build configuration list for PBXNativeTarget "CH06_ExtAudioFileConverter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9160BE1E1D39C09D00742CB9 /* Debug */,
+				9160BE1F1D39C09D00742CB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
