@@ -12,7 +12,7 @@ import AudioToolbox
 
 struct MyAUGraphPlayer
 {
-    var streamFormat = AudioStreamBasicDescription()            // ASBD to use in the graph
+//    var streamFormat = AudioStreamBasicDescription()            // ASBD to use in the graph
     var graph: AUGraph?                                         // Opaque pointer to the AUGraph
     var speechAU: AudioUnit?                                    // pointer to a ComponentInstanceRecord
 }
@@ -67,14 +67,14 @@ func CreateMyAUGraph(player: UnsafeMutablePointer<MyAUGraphPlayer>) {
                   operation: "AUGraphNodeInfo failed")
     
     // debug - get the asbd
-    var propSize = UInt32(sizeof(AudioStreamBasicDescription.self))
-    Utility.check(error: AudioUnitGetProperty(player.pointee.speechAU!,
-                                    kAudioUnitProperty_StreamFormat,
-                                    kAudioUnitScope_Output,
-                                    0,
-                                    &player.pointee.streamFormat,
-                                    &propSize),
-                  operation: "Couldn't get ASBD")
+//    var propSize = UInt32(sizeof(AudioStreamBasicDescription.self))
+//    Utility.check(error: AudioUnitGetProperty(player.pointee.speechAU!,
+//                                    kAudioUnitProperty_StreamFormat,
+//                                    kAudioUnitScope_Output,
+//                                    0,
+//                                    &player.pointee.streamFormat,
+//                                    &propSize),
+//                  operation: "Couldn't get ASBD")
     
     //
     // FUN! re-route the speech thru a reverb effect before sending to speakers
@@ -170,6 +170,7 @@ func PrepareSpeechAU(player: UnsafeMutablePointer<MyAUGraphPlayer>) {
                                               &chan,
                                               &propsize),
                   operation: "AudioUnitGetProperty[kAudioUnitProperty_SpeechChannel] failed")
+    
     
     let myString = CFStringCreateWithCString(kCFAllocatorDefault, "hello world", CFStringBuiltInEncodings.UTF8.rawValue)!
     SpeakCFString(chan!, myString, nil)
