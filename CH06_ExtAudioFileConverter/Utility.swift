@@ -1,6 +1,6 @@
 //
 //  Utility.swift
-//  CH06_AudioConverter
+//  CH06_ExtAudioFileConverter
 //
 //  Created by Douglas Adams on 6/30/16.
 //
