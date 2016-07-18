@@ -12,9 +12,15 @@
 		9160BE1C1D39C09D00742CB9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE1B1D39C09D00742CB9 /* main.swift */; };
 		9160BE211D39C1D100742CB9 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE201D39C1D100742CB9 /* Utility.swift */; };
 		917D95B21D37D1C200DB2893 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D95B11D37D1C200DB2893 /* Utility.swift */; };
+		919E7E091D3C65AC00D0B1AE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919E7E081D3C65AC00D0B1AE /* main.swift */; };
+		919E7E0E1D3C660600D0B1AE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919E7E0D1D3C660600D0B1AE /* Utility.swift */; };
+		919E7E101D3D424F00D0B1AE /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 919E7E0F1D3D424F00D0B1AE /* README.md */; };
 		91C3214A1D37D054004D3C65 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C321491D37D054004D3C65 /* main.swift */; };
 		91DC7D951D2BF6C2007F5110 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DC7D941D2BF6C2007F5110 /* main.swift */; };
 		91DC7D9A1D2BF90E007F5110 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DC7D991D2BF90E007F5110 /* Utility.swift */; };
+		91E2E0241D3B19AA00137DD4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E2E0231D3B19AA00137DD4 /* main.swift */; };
+		91E2E0291D3B1A8000137DD4 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E2E0281D3B1A8000137DD4 /* Utility.swift */; };
+		91E2E02D1D3B1EC500137DD4 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91E2E02B1D3B1EC500137DD4 /* CARingBuffer.cpp */; };
 		91E53AE11D36DB030024222A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E53AE01D36DB030024222A /* main.swift */; };
 		91E53AE61D36DF3E0024222A /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E53AE51D36DF3E0024222A /* Utility.swift */; };
 		91F84E971D289A51005DF80F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F84E961D289A51005DF80F /* main.swift */; };
@@ -45,6 +51,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		919E7E041D3C65AC00D0B1AE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		91C321451D37D054004D3C65 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -55,6 +70,15 @@
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 		91DC7D901D2BF6C2007F5110 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		91E2E01F1D3B19AA00137DD4 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -127,11 +151,21 @@
 		9160BE1B1D39C09D00742CB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9160BE201D39C1D100742CB9 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		917D95B11D37D1C200DB2893 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		919E7E061D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH09_OpenALOrbitLoop; sourceTree = BUILT_PRODUCTS_DIR; };
+		919E7E081D3C65AC00D0B1AE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		919E7E0D1D3C660600D0B1AE /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		919E7E0F1D3D424F00D0B1AE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		91C321471D37D054004D3C65 /* CH07_AUGraphPlayer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH07_AUGraphPlayer; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C321491D37D054004D3C65 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		91DC7D921D2BF6C2007F5110 /* CH06_AudioConverter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH06_AudioConverter; sourceTree = BUILT_PRODUCTS_DIR; };
 		91DC7D941D2BF6C2007F5110 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		91DC7D991D2BF90E007F5110 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		91E2E0211D3B19AA00137DD4 /* CH08_AUGraphInput */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH08_AUGraphInput; sourceTree = BUILT_PRODUCTS_DIR; };
+		91E2E0231D3B19AA00137DD4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		91E2E0281D3B1A8000137DD4 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		91E2E02A1D3B1EC400137DD4 /* CH08_AUGraphInput-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CH08_AUGraphInput-Bridging-Header.h"; sourceTree = "<group>"; };
+		91E2E02B1D3B1EC500137DD4 /* CARingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CARingBuffer.cpp; path = ../../../../../../../../Library/Developer/CoreAudio/PublicUtility/CARingBuffer.cpp; sourceTree = "<group>"; };
+		91E2E02C1D3B1EC500137DD4 /* CARingBuffer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = CARingBuffer.h; path = ../../../../../../../../Library/Developer/CoreAudio/PublicUtility/CARingBuffer.h; sourceTree = "<group>"; };
 		91E53ADE1D36DB030024222A /* CH07_AUGraphSineWave */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH07_AUGraphSineWave; sourceTree = BUILT_PRODUCTS_DIR; };
 		91E53AE01D36DB030024222A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		91E53AE51D36DF3E0024222A /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -164,6 +198,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		919E7E031D3C65AC00D0B1AE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		91C321441D37D054004D3C65 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -172,6 +213,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		91DC7D8F1D2BF6C2007F5110 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91E2E01E1D3B19AA00137DD4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -241,6 +289,15 @@
 			path = CH06_ExtAudioFileConverter;
 			sourceTree = "<group>";
 		};
+		919E7E071D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */ = {
+			isa = PBXGroup;
+			children = (
+				919E7E0D1D3C660600D0B1AE /* Utility.swift */,
+				919E7E081D3C65AC00D0B1AE /* main.swift */,
+			);
+			path = CH09_OpenALOrbitLoop;
+			sourceTree = "<group>";
+		};
 		91C321481D37D054004D3C65 /* CH07_AUGraphPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -259,6 +316,18 @@
 			path = CH06_AudioConverter;
 			sourceTree = "<group>";
 		};
+		91E2E0221D3B19AA00137DD4 /* CH08_AUGraphInput */ = {
+			isa = PBXGroup;
+			children = (
+				91E2E02B1D3B1EC500137DD4 /* CARingBuffer.cpp */,
+				91E2E02C1D3B1EC500137DD4 /* CARingBuffer.h */,
+				91E2E0281D3B1A8000137DD4 /* Utility.swift */,
+				91E2E0231D3B19AA00137DD4 /* main.swift */,
+				91E2E02A1D3B1EC400137DD4 /* CH08_AUGraphInput-Bridging-Header.h */,
+			);
+			path = CH08_AUGraphInput;
+			sourceTree = "<group>";
+		};
 		91E53ADF1D36DB030024222A /* CH07_AUGraphSineWave */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,6 +340,7 @@
 		91F84E7D1D289A11005DF80F = {
 			isa = PBXGroup;
 			children = (
+				919E7E0F1D3D424F00D0B1AE /* README.md */,
 				91F84E951D289A51005DF80F /* CH01_CAMetadata */,
 				91F84EA01D289B32005DF80F /* CH02_CAToneFileGenerator */,
 				91F84EAB1D289B9A005DF80F /* CH03_CAStreamFormatTester */,
@@ -281,6 +351,8 @@
 				91C321481D37D054004D3C65 /* CH07_AUGraphPlayer */,
 				91E53ADF1D36DB030024222A /* CH07_AUGraphSineWave */,
 				9160BE0D1D38419E00742CB9 /* CH07_AUGraphSpeechSynthesis */,
+				91E2E0221D3B19AA00137DD4 /* CH08_AUGraphInput */,
+				919E7E071D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */,
 				91F84E871D289A11005DF80F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -298,6 +370,8 @@
 				91C321471D37D054004D3C65 /* CH07_AUGraphPlayer */,
 				9160BE0C1D38419E00742CB9 /* CH07_AUGraphSpeechSynthesis */,
 				9160BE191D39C09D00742CB9 /* CH06_ExtAudioFileConverter */,
+				91E2E0211D3B19AA00137DD4 /* CH08_AUGraphInput */,
+				919E7E061D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -381,6 +455,23 @@
 			productReference = 9160BE191D39C09D00742CB9 /* CH06_ExtAudioFileConverter */;
 			productType = "com.apple.product-type.tool";
 		};
+		919E7E051D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 919E7E0C1D3C65AC00D0B1AE /* Build configuration list for PBXNativeTarget "CH09_OpenALOrbitLoop" */;
+			buildPhases = (
+				919E7E021D3C65AC00D0B1AE /* Sources */,
+				919E7E031D3C65AC00D0B1AE /* Frameworks */,
+				919E7E041D3C65AC00D0B1AE /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CH09_OpenALOrbitLoop;
+			productName = CH09_OpenALOrbitLoop;
+			productReference = 919E7E061D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */;
+			productType = "com.apple.product-type.tool";
+		};
 		91C321461D37D054004D3C65 /* CH07_AUGraphPlayer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 91C3214D1D37D054004D3C65 /* Build configuration list for PBXNativeTarget "CH07_AUGraphPlayer" */;
@@ -413,6 +504,23 @@
 			name = CH06_AudioConverter;
 			productName = CH06_AudioConverter;
 			productReference = 91DC7D921D2BF6C2007F5110 /* CH06_AudioConverter */;
+			productType = "com.apple.product-type.tool";
+		};
+		91E2E0201D3B19AA00137DD4 /* CH08_AUGraphInput */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91E2E0271D3B19AA00137DD4 /* Build configuration list for PBXNativeTarget "CH08_AUGraphInput" */;
+			buildPhases = (
+				91E2E01D1D3B19AA00137DD4 /* Sources */,
+				91E2E01E1D3B19AA00137DD4 /* Frameworks */,
+				91E2E01F1D3B19AA00137DD4 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CH08_AUGraphInput;
+			productName = CH08_AUGraphInput;
+			productReference = 91E2E0211D3B19AA00137DD4 /* CH08_AUGraphInput */;
 			productType = "com.apple.product-type.tool";
 		};
 		91E53ADD1D36DB030024222A /* CH07_AUGraphSineWave */ = {
@@ -539,6 +647,12 @@
 						DevelopmentTeamName = "Douglas Adams";
 						ProvisioningStyle = Automatic;
 					};
+					919E7E051D3C65AC00D0B1AE = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = EE5B8TYXGA;
+						DevelopmentTeamName = "Douglas Adams";
+						ProvisioningStyle = Automatic;
+					};
 					91C321461D37D054004D3C65 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = EE5B8TYXGA;
@@ -549,6 +663,13 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = EE5B8TYXGA;
 						DevelopmentTeamName = "Douglas Adams";
+						ProvisioningStyle = Automatic;
+					};
+					91E2E0201D3B19AA00137DD4 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = EE5B8TYXGA;
+						DevelopmentTeamName = "Douglas Adams";
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
 					91E53ADD1D36DB030024222A = {
@@ -611,6 +732,8 @@
 				91C321461D37D054004D3C65 /* CH07_AUGraphPlayer */,
 				9160BE0B1D38419E00742CB9 /* CH07_AUGraphSpeechSynthesis */,
 				9160BE181D39C09D00742CB9 /* CH06_ExtAudioFileConverter */,
+				91E2E0201D3B19AA00137DD4 /* CH08_AUGraphInput */,
+				919E7E051D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */,
 			);
 		};
 /* End PBXProject section */
@@ -634,6 +757,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		919E7E021D3C65AC00D0B1AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				919E7E101D3D424F00D0B1AE /* README.md in Sources */,
+				919E7E0E1D3C660600D0B1AE /* Utility.swift in Sources */,
+				919E7E091D3C65AC00D0B1AE /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		91C321431D37D054004D3C65 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -649,6 +782,16 @@
 			files = (
 				91DC7D9A1D2BF90E007F5110 /* Utility.swift in Sources */,
 				91DC7D951D2BF6C2007F5110 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91E2E01D1D3B19AA00137DD4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91E2E02D1D3B1EC500137DD4 /* CARingBuffer.cpp in Sources */,
+				91E2E0291D3B1A8000137DD4 /* Utility.swift in Sources */,
+				91E2E0241D3B19AA00137DD4 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -734,6 +877,20 @@
 			};
 			name = Release;
 		};
+		919E7E0A1D3C65AC00D0B1AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		919E7E0B1D3C65AC00D0B1AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		91C3214B1D37D054004D3C65 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -759,6 +916,29 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		91E2E0251D3B19AA00137DD4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CH08_AUGraphInput/CH08_AUGraphInput-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		91E2E0261D3B19AA00137DD4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CH08_AUGraphInput/CH08_AUGraphInput-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -940,12 +1120,22 @@
 				9160BE111D38419F00742CB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9160BE1D1D39C09D00742CB9 /* Build configuration list for PBXNativeTarget "CH06_ExtAudioFileConverter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9160BE1E1D39C09D00742CB9 /* Debug */,
 				9160BE1F1D39C09D00742CB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		919E7E0C1D3C65AC00D0B1AE /* Build configuration list for PBXNativeTarget "CH09_OpenALOrbitLoop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				919E7E0A1D3C65AC00D0B1AE /* Debug */,
+				919E7E0B1D3C65AC00D0B1AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -963,6 +1153,15 @@
 			buildConfigurations = (
 				91DC7D961D2BF6C2007F5110 /* Debug */,
 				91DC7D971D2BF6C2007F5110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91E2E0271D3B19AA00137DD4 /* Build configuration list for PBXNativeTarget "CH08_AUGraphInput" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91E2E0251D3B19AA00137DD4 /* Debug */,
+				91E2E0261D3B19AA00137DD4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
