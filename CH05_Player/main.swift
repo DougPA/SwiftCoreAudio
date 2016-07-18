@@ -156,7 +156,7 @@ Utility.check(error: AudioFileOpenURL(fileURL,                              // f
 
 // get the audio data format from the file
 var dataFormat = AudioStreamBasicDescription()
-var propSize = UInt32(sizeof(AudioStreamBasicDescription))
+var propSize = UInt32(sizeof(AudioStreamBasicDescription.self))
 Utility.check(error: AudioFileGetProperty(player.playbackFile!,             // AudioFileID
                                           kAudioFilePropertyDataFormat,     // desired property
                                           &propSize,                        // size of the property
@@ -185,7 +185,7 @@ CalculateBytesForTime(inAudioFile: player.playbackFile!, inDesc: dataFormat,  in
 if (dataFormat.mBytesPerPacket == 0 || dataFormat.mFramesPerPacket == 0) {
     
     // variable bit rate formats
-    player.packetDescs = UnsafeMutablePointer<AudioStreamPacketDescription>(malloc(sizeof(AudioStreamPacketDescription) * Int(player.numPacketsToRead)))
+    player.packetDescs = UnsafeMutablePointer<AudioStreamPacketDescription>(malloc(sizeof(AudioStreamPacketDescription.self) * Int(player.numPacketsToRead)))
 
 } else {
     

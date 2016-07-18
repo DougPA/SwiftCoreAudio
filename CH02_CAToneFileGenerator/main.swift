@@ -36,7 +36,7 @@ Swift.print("generating \(tone) hz tone")
 
 // convert the file path into a URL
 let fileName = String(format: kFilenameFormat, tone)
-let filePath = NSString(string: FileManager.default().currentDirectoryPath).appendingPathComponent( fileName)
+let filePath = NSString(string: FileManager.default.currentDirectoryPath).appendingPathComponent( fileName)
 let fileURL = URL(fileURLWithPath: filePath)
 
 Swift.print("path: \(fileURL)")

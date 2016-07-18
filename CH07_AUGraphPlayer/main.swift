@@ -109,11 +109,11 @@ func PrepareFileAU(player: UnsafeMutablePointer<AUGraphPlayer>) -> Double
                                                kAudioUnitScope_Global,
                                                0,
                                                &player.pointee.inputFile,
-                                               UInt32(sizeof(AudioFileID))),
+                                               UInt32(sizeof(AudioFileID.self))),
                operation: "AudioUnitSetProperty[kAudioUnitProperty_ScheduledFileIDs] failed")
     
     var nPackets: UInt64 = 0
-    var propsize  = UInt32(sizeof(UInt64))
+    var propsize  = UInt32(sizeof(UInt64.self))
     Utility.check( error: AudioFileGetProperty(player.pointee.inputFile!,
                                                kAudioFilePropertyAudioDataPacketCount,
                                                &propsize,
@@ -131,7 +131,7 @@ func PrepareFileAU(player: UnsafeMutablePointer<AUGraphPlayer>) -> Double
                                                kAudioUnitScope_Global,
                                                0,
                                                &rgn,
-                                               UInt32(sizeof(ScheduledAudioFileRegion))),
+                                               UInt32(sizeof(ScheduledAudioFileRegion.self))),
                    operation: "AudioUnitSetProperty[kAudioUnitProperty_ScheduledFileRegion] failed")
     
     // prime the file player AU with default values
@@ -141,7 +141,7 @@ func PrepareFileAU(player: UnsafeMutablePointer<AUGraphPlayer>) -> Double
                                                kAudioUnitScope_Global,
                                                0,
                                                &defaultVal,
-                                               UInt32(sizeof(UInt32))),
+                                               UInt32(sizeof(UInt32.self))),
                    operation: "AudioUnitSetProperty[kAudioUnitProperty_ScheduledFilePrime] failed")
     
     // tell the file player AU when to start playing (-1 sample time means next render cycle)
@@ -151,7 +151,7 @@ func PrepareFileAU(player: UnsafeMutablePointer<AUGraphPlayer>) -> Double
                                                kAudioUnitScope_Global,
                                                0,
                                                &startTime,
-                                               UInt32(sizeof(AudioTimeStamp))),
+                                               UInt32(sizeof(AudioTimeStamp.self))),
                    operation: "AudioUnitSetProperty[kAudioUnitProperty_ScheduleStartTimeStamp]")
     
     // file duration
@@ -177,7 +177,7 @@ Utility.check( error: AudioFileOpenURL(inputFileURL,
                operation: "AudioFileOpenURL failed")
 
 // get the audio data format from the file
-var propSize  = UInt32(sizeof(AudioStreamBasicDescription))
+var propSize  = UInt32(sizeof(AudioStreamBasicDescription.self))
 Utility.check( error: AudioFileGetProperty(player.inputFile!,
                                            kAudioFilePropertyDataFormat,
                                            &propSize,

@@ -37,7 +37,7 @@ fileTypeAndFormat.mFormatID = kAudioFormatLinearPCM
 var audioErr: OSStatus  = noErr
 var infoSize: UInt32  = 0
 audioErr = AudioFileGetGlobalInfoSize(kAudioFileGlobalInfo_AvailableStreamDescriptionsForFormat,
-                                      UInt32(strideof(AudioFileTypeAndFormatID)),
+                                      UInt32(strideof(AudioFileTypeAndFormatID.self)),
                                       &fileTypeAndFormat,
                                       &infoSize);
 // Check for errors (exit if an error)
@@ -50,7 +50,7 @@ if audioErr != noErr {
 // get the property (a pointer to an array of AudioStreamBasicDescription's)
 var asbdArrayPtr: UnsafeMutablePointer<Void> = malloc(Int(infoSize))
 audioErr = AudioFileGetGlobalInfo(kAudioFileGlobalInfo_AvailableStreamDescriptionsForFormat,
-                                  UInt32(sizeof (AudioFileTypeAndFormatID)),
+                                  UInt32(sizeof (AudioFileTypeAndFormatID.self)),
                                   &fileTypeAndFormat,
                                   &infoSize,
                                   asbdArrayPtr)
@@ -58,13 +58,13 @@ audioErr = AudioFileGetGlobalInfo(kAudioFileGlobalInfo_AvailableStreamDescriptio
 assert (audioErr == noErr)
 
 // calculate how many AudioStreamBasicDescription structs were found
-let asbdCount: Int = Int(infoSize) / sizeof (AudioStreamBasicDescription)
+let asbdCount: Int = Int(infoSize) / sizeof (AudioStreamBasicDescription.self)
 
 // for each AudioStreamBasicDescription
 for i in 0..<asbdCount {
     
     // cast the Void pointer to a pointer to an AudioStreamBasicDescription
-    let asbdPtr = UnsafeMutablePointer<AudioStreamBasicDescription>(asbdArrayPtr.advanced(by: i * sizeof (AudioStreamBasicDescription)))
+    let asbdPtr = UnsafeMutablePointer<AudioStreamBasicDescription>(asbdArrayPtr.advanced(by: i * sizeof (AudioStreamBasicDescription.self)))
     
     // get the formatId
     let idString = idToString(CFSwapInt32HostToBig(asbdPtr.pointee.mFormatID))

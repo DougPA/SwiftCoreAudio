@@ -127,7 +127,7 @@ Utility.check(error: setOutputSampleRate(&recordFormat.mSampleRate),
 //                mSampleRate, mFormatID, and mChannelsPerFrame
 //         output: the remainder of the ASBD will be filled out as much as possible
 //                 given the information known about the format
-var propSize: UInt32  = UInt32(sizeof(AudioStreamBasicDescription))
+var propSize: UInt32  = UInt32(sizeof(AudioStreamBasicDescription.self))
 Utility.check(error: AudioFormatGetProperty(kAudioFormatProperty_FormatInfo,
                                             0,
                                             nil,
@@ -152,7 +152,7 @@ Utility.check(error: AudioQueueNewInput(&recordFormat,                  // ASBD
 //
 // for example: certain fields in an ASBD cannot possibly be known until it's
 // codec is instantiated (in this case, by the AudioQueue's Audio Converter object)
-var size: UInt32  = UInt32(sizeof(AudioStreamBasicDescription))
+var size: UInt32  = UInt32(sizeof(AudioStreamBasicDescription.self))
 Utility.check(error: AudioQueueGetProperty(queue!,
                                            kAudioConverterCurrentOutputStreamDescription,
                                            &recordFormat,

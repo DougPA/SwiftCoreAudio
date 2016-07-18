@@ -123,7 +123,7 @@ func audioConverterCallback(audioConverter: AudioConverterRef,
         if sizePerPacket == 0 {
             
             // YES, get the packet size
-            var size: UInt32  = UInt32(sizeof(UInt32))
+            var size: UInt32  = UInt32(sizeof(UInt32.self))
             Utility.check(error: AudioConverterGetProperty(audioConverter!,
                                                            kAudioConverterPropertyMaximumOutputPacketSize,
                                                            &size,
@@ -137,7 +137,7 @@ func audioConverterCallback(audioConverter: AudioConverterRef,
             packetsPerBuffer = outputBufferSize / sizePerPacket
             
             // allocate space for the AudioStreamPacketDescription(s)
-            settings.pointee.inputFilePacketDescriptions = UnsafeMutablePointer<AudioStreamPacketDescription>(malloc(sizeof(AudioStreamPacketDescription) * Int(packetsPerBuffer)))
+            settings.pointee.inputFilePacketDescriptions = UnsafeMutablePointer<AudioStreamPacketDescription>(malloc(sizeof(AudioStreamPacketDescription.self) * Int(packetsPerBuffer)))
             
         }
         else
@@ -213,7 +213,7 @@ Utility.check(error: AudioFileOpenURL(inputFileURL,
               operation: "AudioFileOpenURL failed")
 
 // get the audio data format from the file
-var propSize: UInt32 = UInt32(sizeof(AudioStreamBasicDescription))
+var propSize: UInt32 = UInt32(sizeof(AudioStreamBasicDescription.self))
 Utility.check(error: AudioFileGetProperty(audioConverterSettings.inputFile!,
                                           kAudioFilePropertyDataFormat,
                                           &propSize,
@@ -221,7 +221,7 @@ Utility.check(error: AudioFileGetProperty(audioConverterSettings.inputFile!,
               operation: "couldn't get file's data format")
 
 // get the total number of packets in the file
-propSize = UInt32(sizeof(UInt64))
+propSize = UInt32(sizeof(UInt64.self))
 Utility.check(error: AudioFileGetProperty(audioConverterSettings.inputFile!,
                                           kAudioFilePropertyAudioDataPacketCount,
                                           &propSize,
@@ -229,7 +229,7 @@ Utility.check(error: AudioFileGetProperty(audioConverterSettings.inputFile!,
               operation: "couldn't get file's packet count")
 
 // get size of the largest possible packet
-propSize = UInt32(sizeof(UInt32))
+propSize = UInt32(sizeof(UInt32.self))
 Utility.check(error: AudioFileGetProperty(audioConverterSettings.inputFile!,
                                           kAudioFilePropertyMaximumPacketSize,
                                           &propSize, &audioConverterSettings.inputFilePacketMaxSize),
