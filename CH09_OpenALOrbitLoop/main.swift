@@ -14,7 +14,6 @@ let loopPath = CFStringCreateWithCString(kCFAllocatorDefault, "/Library/Audio/Ap
 let kOrbitSpeed: Double = 1
 let kRunTime = 20.0
 
-
 //--------------------------------------------------------------------------------------------------
 // MARK: Struct definition
 
@@ -125,7 +124,7 @@ var player = MyLoopPlayer()
 Utility.check(error: loadLoopIntoBuffer(player: &player),
               operation: "Couldn't load loop into buffer")
     
-    // set up OpenAL buffer
+// set up OpenAL buffer
 var alDevice: OpaquePointer
 alDevice = alcOpenDevice(nil)
 Utility.checkAL(operation: "Couldn't open AL device") // default device
