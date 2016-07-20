@@ -8,29 +8,35 @@
 import AudioToolbox
 import OpenAL
 
+//--------------------------------------------------------------------------------------------------
+// MARK: Constants
 
-let loopPath = CFStringCreateWithCString(kCFAllocatorDefault, "/Library/Audio/Apple Loops/Apple/iLife Sound Effects/Transportation/Bicycle Coasting.caf", CFStringBuiltInEncodings.UTF8.rawValue)
-//let loopPath = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/Doug/x.mp3", CFStringBuiltInEncodings.UTF8.rawValue)
-let kOrbitSpeed: Double = 1
-let kRunTime = 20.0
+let loopPath = CFStringCreateWithCString(kCFAllocatorDefault,
+                                         "/Library/Audio/Apple Loops/Apple/iLife Sound Effects/Transportation/Bicycle Coasting.caf",
+                                         CFStringBuiltInEncodings.UTF8.rawValue)
+
+let kOrbitSpeed: Double = 1                 // speed in seconds
+let kRunTime = 20.0                         // run time in seconds
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Struct definition
 
 struct MyLoopPlayer {
-    var dataFormat = AudioStreamBasicDescription()
-    var sampleBuffer: UnsafeMutablePointer<UInt16>?
-    var bufferSizeBytes: UInt32 = 0
-    var sources = [ALuint](repeating: 0, count: 1)
+    var dataFormat = AudioStreamBasicDescription()                      // loop AudioStreamBasicDescription
+    var sampleBuffer: UnsafeMutablePointer<UInt16>?                     // pointer to the Sample buffer
+    var bufferSizeBytes: UInt32 = 0                                     // buffer size in bytes
+    var sources = [ALuint](repeating: 0, count: 1)                      // OpenAL source handles
 }
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Supporting methods
 
+//
+// calculate and set a new player position
+//
 func updateSourceLocation(player: UnsafeMutablePointer<MyLoopPlayer>) {
     
     let theta: Double  = fmod(CFAbsoluteTimeGetCurrent() * kOrbitSpeed, M_PI * 2)
-    // printf ("%f\n", theta);
     let x = ALfloat(3.0 * cos(theta))
     let y = ALfloat(0.5 * sin (theta))
     let z = ALfloat(1.0 * sin (theta))
@@ -39,13 +45,14 @@ func updateSourceLocation(player: UnsafeMutablePointer<MyLoopPlayer>) {
     
     alSource3f(player.pointee.sources[0], AL_POSITION, x, y, z)
 }
-
+//
+// use ExtAudioFile to load a loop into the Player's buffer
+//
 func loadLoopIntoBuffer(player: UnsafeMutablePointer<MyLoopPlayer>) -> OSStatus {
     
     let loopFileURL: CFURL  = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, loopPath, .cfurlposixPathStyle, false)
     
     // describe the client format - AL needs mono
-    memset(&player.pointee.dataFormat, 0, sizeof(AudioStreamBasicDescription.self))
     player.pointee.dataFormat.mFormatID = kAudioFormatLinearPCM
     player.pointee.dataFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked
     player.pointee.dataFormat.mSampleRate = 44100.0
@@ -79,18 +86,14 @@ func loadLoopIntoBuffer(player: UnsafeMutablePointer<MyLoopPlayer>) -> OSStatus 
     
     player.pointee.bufferSizeBytes = UInt32(fileLengthFrames) * player.pointee.dataFormat.mBytesPerFrame
     
-    var buffers: UnsafeMutablePointer<AudioBufferList>
-    
-    let ablSize  = sizeof(UInt32.self) + (sizeof(AudioBuffer.self) * 1) // 1 channel
-    buffers = UnsafeMutablePointer<AudioBufferList>(malloc(ablSize))
-    
     // allocate sample buffer
     player.pointee.sampleBuffer =  UnsafeMutablePointer<UInt16>(malloc(sizeof(UInt16.self) * Int(player.pointee.bufferSizeBytes))) // 4/18/11 - fix 1
-    
-    buffers.pointee.mNumberBuffers = 1;
-    buffers.pointee.mBuffers.mNumberChannels = 1
-    buffers.pointee.mBuffers.mDataByteSize = player.pointee.bufferSizeBytes
-    buffers.pointee.mBuffers.mData = UnsafeMutablePointer<Void>(player.pointee.sampleBuffer)
+
+    var bufferList = AudioBufferList()
+    bufferList.mNumberBuffers = 1
+    bufferList.mBuffers.mNumberChannels = 1
+    bufferList.mBuffers.mDataByteSize = player.pointee.bufferSizeBytes
+    bufferList.mBuffers.mData = UnsafeMutablePointer<Void>(player.pointee.sampleBuffer)
     
     Swift.print("created AudioBufferList\n")
     
@@ -98,10 +101,10 @@ func loadLoopIntoBuffer(player: UnsafeMutablePointer<MyLoopPlayer>) -> OSStatus 
     var totalFramesRead: UInt32 = 0
     repeat {
         var framesRead: UInt32  = UInt32(fileLengthFrames) - totalFramesRead
-        buffers.pointee.mBuffers.mData = UnsafeMutablePointer<Void>(player.pointee.sampleBuffer?.advanced(by: Int(totalFramesRead) * sizeof(UInt16.self)))
+        bufferList.mBuffers.mData = UnsafeMutablePointer<Void>(player.pointee.sampleBuffer?.advanced(by: Int(totalFramesRead) * sizeof(UInt16.self)))
         Utility.check(error: ExtAudioFileRead(extAudioFile!,
                                               &framesRead,
-                                              buffers),
+                                              &bufferList),
                       operation: "ExtAudioFileRead failed")
         
         totalFramesRead += framesRead
@@ -110,14 +113,13 @@ func loadLoopIntoBuffer(player: UnsafeMutablePointer<MyLoopPlayer>) -> OSStatus 
         
     } while (totalFramesRead < UInt32(fileLengthFrames))
     
-    // can free the ABL; still have samples in sampleBuffer
-    free(buffers)
     return noErr
 }
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Main
 
+// create the player
 var player = MyLoopPlayer()
     
 // convert to an OpenAL-friendly format and read into memory
@@ -137,7 +139,7 @@ Utility.checkAL(operation: "Couldn't open AL context")
 alcMakeContextCurrent(alContext)
 Utility.checkAL(operation: "Couldn't make AL context current")
 
-var buffers: ALuint = 0
+var buffers: ALuint = 0     // only one buffer
 alGenBuffers(1, &buffers)
 Utility.checkAL(operation: "Couldn't generate buffers")
 
@@ -154,12 +156,15 @@ free(player.sampleBuffer)
 alGenSources(1, &player.sources)
 Utility.checkAL(operation: "Couldn't generate sources")
 
+// set the source to Looping mode
 alSourcei(player.sources[0], AL_LOOPING, AL_TRUE)
 Utility.checkAL(operation: "Couldn't set source looping property")
 
+// set the gain
 alSourcef(player.sources[0], AL_GAIN, ALfloat(AL_MAX_GAIN))
 Utility.checkAL(operation: "Couldn't set source gain")
 
+// set the initial sound position
 updateSourceLocation(player: &player)
 Utility.checkAL(operation: "Couldn't set initial source position")
 
@@ -185,6 +190,7 @@ Utility.checkAL(operation: "Couldn't play")
 // and wait
 Swift.print("Playing...\n")
 
+// start now and loop for kRunTime seconds
 var startTime: time_t  = time(nil)
 repeat
 {
@@ -192,6 +198,7 @@ repeat
     updateSourceLocation(player: &player)
     Utility.checkAL(operation: "Couldn't set looping source position")
     
+    // pause
     CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.1, false)
     
 } while (difftime(time(nil), startTime) < kRunTime)

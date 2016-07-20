@@ -28,7 +28,7 @@ struct MyStreamPlayer {
     var bufferSizeBytes: UInt32	= 0                                     // buffer size in bytes
     var fileLengthFrames: Int64 = 0                                     // file length in frames
     var totalFramesRead: Int64 = 0                                      // number of frames read
-    var sources = [ALuint](repeating: 0, count: 1)                      //
+    var sources = [ALuint](repeating: 0, count: 1)                      // OpenAL source handles
     var extAudioFile: ExtAudioFileRef?                                  // reference to an ExtAudioFile
 }
 
@@ -212,7 +212,7 @@ for i in 0..<kBufferCount {
     fillALBuffer(player: &player, alBuffer: buffers[i])
 }
 
-// set up streaming source
+// set up OpenAL source
 alGenSources(1, &player.sources)
 Utility.checkAL(operation: "Couldn't generate sources")
 
@@ -257,7 +257,7 @@ repeat
     
 } while (difftime(time(nil), startTime) < kRunTime)
 
-// cleanup:
+// cleanup
 alSourceStop(player.sources[0])
 alDeleteSources(1, player.sources)
 alDeleteBuffers(ALsizei(kBufferCount), buffers)

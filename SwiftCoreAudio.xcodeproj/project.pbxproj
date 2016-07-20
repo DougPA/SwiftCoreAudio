@@ -16,7 +16,6 @@
 		917D95B21D37D1C200DB2893 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D95B11D37D1C200DB2893 /* Utility.swift */; };
 		919E7E091D3C65AC00D0B1AE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919E7E081D3C65AC00D0B1AE /* main.swift */; };
 		919E7E0E1D3C660600D0B1AE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919E7E0D1D3C660600D0B1AE /* Utility.swift */; };
-		919E7E101D3D424F00D0B1AE /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 919E7E0F1D3D424F00D0B1AE /* README.md */; };
 		91C3214A1D37D054004D3C65 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C321491D37D054004D3C65 /* main.swift */; };
 		91DC7D951D2BF6C2007F5110 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DC7D941D2BF6C2007F5110 /* main.swift */; };
 		91DC7D9A1D2BF90E007F5110 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DC7D991D2BF90E007F5110 /* Utility.swift */; };
@@ -826,7 +825,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				919E7E101D3D424F00D0B1AE /* README.md in Sources */,
 				919E7E0E1D3C660600D0B1AE /* Utility.swift in Sources */,
 				919E7E091D3C65AC00D0B1AE /* main.swift in Sources */,
 			);
