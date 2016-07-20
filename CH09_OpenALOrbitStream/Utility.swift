@@ -12,7 +12,7 @@ class Utility {
     //
     // convert a Core Audio error code to a printable string
     //
-    static func codeToString(_ error: OSStatus) -> String {
+    static func codeToString (_ error: OSStatus) -> String {
         
         // byte swap the error
         let errorCode = CFSwapInt32HostToBig(UInt32(bitPattern: error))
@@ -40,7 +40,7 @@ class Utility {
     //
     // generic error handler - if error is nonzero, prints error message and exits program.
     //
-    static func check(error: OSStatus , operation: String) {
+    static func check (error: OSStatus , operation: String) {
     
         // return if no error
         if error == noErr { return }
@@ -54,7 +54,7 @@ class Utility {
     //
     // OpenAL error handler
     //
-    static func checkAL(operation: String) {
+    static func checkAL (operation: String) {
         
         let alErr = alGetError()
         
