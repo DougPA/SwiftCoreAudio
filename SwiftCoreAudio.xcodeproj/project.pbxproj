@@ -13,6 +13,8 @@
 		9160BE141D3945F300742CB9 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE131D3945F300742CB9 /* Utility.swift */; };
 		9160BE1C1D39C09D00742CB9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE1B1D39C09D00742CB9 /* main.swift */; };
 		9160BE211D39C1D100742CB9 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9160BE201D39C1D100742CB9 /* Utility.swift */; };
+		91662AB61D48108B001CC4EB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91662AB51D48108B001CC4EB /* main.swift */; };
+		91662ABB1D4810B9001CC4EB /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91662ABA1D4810B9001CC4EB /* Utility.swift */; };
 		917D95B21D37D1C200DB2893 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D95B11D37D1C200DB2893 /* Utility.swift */; };
 		919E7E091D3C65AC00D0B1AE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919E7E081D3C65AC00D0B1AE /* main.swift */; };
 		919E7E0E1D3C660600D0B1AE /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919E7E0D1D3C660600D0B1AE /* Utility.swift */; };
@@ -53,6 +55,15 @@
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 		9160BE171D39C09D00742CB9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		91662AB11D48108B001CC4EB /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -163,6 +174,9 @@
 		9160BE191D39C09D00742CB9 /* CH06_ExtAudioFileConverter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH06_ExtAudioFileConverter; sourceTree = BUILT_PRODUCTS_DIR; };
 		9160BE1B1D39C09D00742CB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9160BE201D39C1D100742CB9 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		91662AB31D48108B001CC4EB /* CH--_OpenALSineWave */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "CH--_OpenALSineWave"; sourceTree = BUILT_PRODUCTS_DIR; };
+		91662AB51D48108B001CC4EB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		91662ABA1D4810B9001CC4EB /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		917D95B11D37D1C200DB2893 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		919E7E061D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CH09_OpenALOrbitLoop; sourceTree = BUILT_PRODUCTS_DIR; };
 		919E7E081D3C65AC00D0B1AE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -212,6 +226,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9160BE161D39C09D00742CB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91662AB01D48108B001CC4EB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -318,6 +339,15 @@
 			path = CH06_ExtAudioFileConverter;
 			sourceTree = "<group>";
 		};
+		91662AB41D48108B001CC4EB /* CH--_OpenALSineWave */ = {
+			isa = PBXGroup;
+			children = (
+				91662ABA1D4810B9001CC4EB /* Utility.swift */,
+				91662AB51D48108B001CC4EB /* main.swift */,
+			);
+			path = "CH--_OpenALSineWave";
+			sourceTree = "<group>";
+		};
 		919E7E071D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,6 +413,7 @@
 				91E2E0221D3B19AA00137DD4 /* CH08_AUGraphInput */,
 				919E7E071D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */,
 				914FA6271D3E757A0026B1B3 /* CH09_OpenALOrbitStream */,
+				91662AB41D48108B001CC4EB /* CH--_OpenALSineWave */,
 				91F84E871D289A11005DF80F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -403,6 +434,7 @@
 				91E2E0211D3B19AA00137DD4 /* CH08_AUGraphInput */,
 				919E7E061D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */,
 				914FA6261D3E757A0026B1B3 /* CH09_OpenALOrbitStream */,
+				91662AB31D48108B001CC4EB /* CH--_OpenALSineWave */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -501,6 +533,23 @@
 			name = CH06_ExtAudioFileConverter;
 			productName = CH06_ExtAudioFileConverter;
 			productReference = 9160BE191D39C09D00742CB9 /* CH06_ExtAudioFileConverter */;
+			productType = "com.apple.product-type.tool";
+		};
+		91662AB21D48108B001CC4EB /* CH--_OpenALSineWave */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91662AB91D48108B001CC4EB /* Build configuration list for PBXNativeTarget "CH--_OpenALSineWave" */;
+			buildPhases = (
+				91662AAF1D48108B001CC4EB /* Sources */,
+				91662AB01D48108B001CC4EB /* Frameworks */,
+				91662AB11D48108B001CC4EB /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "CH--_OpenALSineWave";
+			productName = "CH--_OpenALSineWave";
+			productReference = 91662AB31D48108B001CC4EB /* CH--_OpenALSineWave */;
 			productType = "com.apple.product-type.tool";
 		};
 		919E7E051D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */ = {
@@ -701,6 +750,12 @@
 						DevelopmentTeamName = "Douglas Adams";
 						ProvisioningStyle = Automatic;
 					};
+					91662AB21D48108B001CC4EB = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = EE5B8TYXGA;
+						DevelopmentTeamName = "Douglas Adams";
+						ProvisioningStyle = Automatic;
+					};
 					919E7E051D3C65AC00D0B1AE = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = EE5B8TYXGA;
@@ -789,6 +844,7 @@
 				91E2E0201D3B19AA00137DD4 /* CH08_AUGraphInput */,
 				919E7E051D3C65AC00D0B1AE /* CH09_OpenALOrbitLoop */,
 				914FA6251D3E757A0026B1B3 /* CH09_OpenALOrbitStream */,
+				91662AB21D48108B001CC4EB /* CH--_OpenALSineWave */,
 			);
 		};
 /* End PBXProject section */
@@ -818,6 +874,15 @@
 			files = (
 				9160BE211D39C1D100742CB9 /* Utility.swift in Sources */,
 				9160BE1C1D39C09D00742CB9 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91662AAF1D48108B001CC4EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91662ABB1D4810B9001CC4EB /* Utility.swift in Sources */,
+				91662AB61D48108B001CC4EB /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -948,6 +1013,20 @@
 			name = Debug;
 		};
 		9160BE1F1D39C09D00742CB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		91662AB71D48108B001CC4EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		91662AB81D48108B001CC4EB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1197,6 +1276,7 @@
 				914FA62B1D3E757A0026B1B3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9160BE121D38419F00742CB9 /* Build configuration list for PBXNativeTarget "CH07_AUGraphSpeechSynthesis" */ = {
 			isa = XCConfigurationList;
@@ -1215,6 +1295,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		91662AB91D48108B001CC4EB /* Build configuration list for PBXNativeTarget "CH--_OpenALSineWave" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91662AB71D48108B001CC4EB /* Debug */,
+				91662AB81D48108B001CC4EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		919E7E0C1D3C65AC00D0B1AE /* Build configuration list for PBXNativeTarget "CH09_OpenALOrbitLoop" */ = {
 			isa = XCConfigurationList;
