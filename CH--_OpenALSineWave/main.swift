@@ -45,16 +45,18 @@ func fillALBuffer (player: UnsafeMutablePointer<MyStreamPlayer>, alBuffer: ALuin
     // calculate the length of one cycle (one wavelength)
     let cycleLength: Double  = kSampleRate / kSineFrequency
     
-    for frame in 0..<Int(player.pointee.bufferSizeBytes) / sizeof(UInt16.self)
+    for frame in 0..<Int(player.pointee.bufferSizeBytes) / (2 * sizeof(UInt16.self))
     {
-        // get a reference to the channel data (1 channel assumed)
+        // get a reference to the channel data (2 channels interleaved assumed)
         let channels = UnsafeMutablePointer<Int16>(player.pointee.bufferList.mBuffers.mData)!
         let left = UnsafeMutableBufferPointer<Int16>(start: channels, count: Int(player.pointee.bufferSizeBytes) / sizeof(UInt16.self))
+        let right = UnsafeMutableBufferPointer<Int16>(start: channels.advanced(by: 1), count: Int(player.pointee.bufferSizeBytes) / sizeof(UInt16.self))
         
         // populate each channel with the same data
-        left[frame] = Int16( sin (2 * M_PI * (phase / cycleLength)) * Double(Int16.max))
+        left[frame * 2] = Int16( sin (2 * M_PI * (phase / cycleLength)) * Double(Int16.max))
+        right[frame * 2] = left[frame * 2]
         
-        // increment the current frame number
+        // increment the phase
         phase += 1.0
         
         // the phase repeats going from zero through the cycleLength over and over
@@ -65,7 +67,7 @@ func fillALBuffer (player: UnsafeMutablePointer<MyStreamPlayer>, alBuffer: ALuin
     player.pointee.phase = phase
     
     // copy from the AudioBufferList to the OpenAL buffer
-    alBufferData(alBuffer, AL_FORMAT_MONO16, player.pointee.bufferList.mBuffers.mData, ALsizei(player.pointee.bufferSizeBytes), ALsizei(player.pointee.dataFormat.mSampleRate))
+    alBufferData(alBuffer, AL_FORMAT_STEREO16, player.pointee.bufferList.mBuffers.mData, ALsizei(player.pointee.bufferSizeBytes), ALsizei(player.pointee.dataFormat.mSampleRate))
     
     // freee the malloc'd memory (the sample buffer)
 //    free(sampleBuffer)
@@ -122,17 +124,17 @@ var player = MyStreamPlayer()
 player.dataFormat.mFormatID = kAudioFormatLinearPCM                                             // uncompressed PCM
 player.dataFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked     // signed integer & packed
 player.dataFormat.mSampleRate = kSampleRate                                                     // sample rate = 44,100
-player.dataFormat.mChannelsPerFrame = 1                                                         // 1 channel
+player.dataFormat.mChannelsPerFrame = 2                                                         // 2 channels
 player.dataFormat.mFramesPerPacket = 1                                                          // 1 frame per packet
 player.dataFormat.mBitsPerChannel = 16                                                          // 16 bit signed integer
-player.dataFormat.mBytesPerFrame = 2                                                            // 2 bytes per frame
-player.dataFormat.mBytesPerPacket = 2                                                           // 2 bytes per packet
+player.dataFormat.mBytesPerFrame = 4                                                            // 2 bytes per frame
+player.dataFormat.mBytesPerPacket = 4                                                           // 2 bytes per packet
 
 // calcuate the buffer needed (buffer duration * sample rate * bytes per frame = number of bytes)
 player.bufferSizeBytes = UInt32(kBufferDuration * player.dataFormat.mSampleRate * Double(player.dataFormat.mBytesPerFrame))
 
 // create & setup an AudioBufferList for the samples
-var audioBuffer = AudioBuffer(mNumberChannels: 1, mDataByteSize: player.bufferSizeBytes, mData: nil)
+var audioBuffer = AudioBuffer(mNumberChannels: 2, mDataByteSize: player.bufferSizeBytes, mData: nil)
 player.bufferList = AudioBufferList(mNumberBuffers: 1, mBuffers: audioBuffer)
 
 // allocate a buffer for the samples
@@ -225,7 +227,7 @@ if alIsExtensionPresent("AL_EXT_STATIC_BUFFER") == ALboolean(AL_TRUE) {
         for i in 0..<kBufferCount {
             
             // setup the buffer to use Static data
-            bufferDataStaticProc(ALint(buffers[i]), AL_FORMAT_MONO16, &buffers[i], ALsizei(player.bufferSizeBytes), ALsizei(player.dataFormat.mSampleRate) )
+            bufferDataStaticProc(ALint(buffers[i]), AL_FORMAT_STEREO16, &buffers[i], ALsizei(player.bufferSizeBytes), ALsizei(player.dataFormat.mSampleRate) )
 
             // do the initial fill of the buffer
             fillALBuffer(player: &player, alBuffer: buffers[i])
