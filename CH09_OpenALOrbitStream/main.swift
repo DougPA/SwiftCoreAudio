@@ -58,14 +58,14 @@ func setUpExtAudioFile (player: UnsafeMutablePointer<MyStreamPlayer>) -> OSStatu
     let streamFileURL: CFURL  = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, streamPath, .cfurlposixPathStyle, false)
     
     // describe the client format - AL needs mono
-    player.pointee.dataFormat.mFormatID = kAudioFormatLinearPCM
-    player.pointee.dataFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked
-    player.pointee.dataFormat.mSampleRate = 44100.0
-    player.pointee.dataFormat.mChannelsPerFrame = 1
-    player.pointee.dataFormat.mFramesPerPacket = 1
-    player.pointee.dataFormat.mBitsPerChannel = 16
-    player.pointee.dataFormat.mBytesPerFrame = 2
-    player.pointee.dataFormat.mBytesPerPacket = 2
+    player.pointee.dataFormat.mFormatID = kAudioFormatLinearPCM                                             // uncompressed PCM
+    player.pointee.dataFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked     // signed integer & packed
+    player.pointee.dataFormat.mSampleRate = 44100.0                                                         // sample rate = 44,100
+    player.pointee.dataFormat.mChannelsPerFrame = 1                                                         // 1 channel
+    player.pointee.dataFormat.mFramesPerPacket = 1                                                          // 1 frame per packet
+    player.pointee.dataFormat.mBitsPerChannel = 16                                                          // 16 bit signed integer
+    player.pointee.dataFormat.mBytesPerFrame = 2                                                            // 2 bytes per frame
+    player.pointee.dataFormat.mBytesPerPacket = 2                                                           // 2 bytes per packet
     
     // open the source URL
     Utility.check(error: ExtAudioFileOpenURL(streamFileURL, &player.pointee.extAudioFile),
@@ -101,22 +101,25 @@ func setUpExtAudioFile (player: UnsafeMutablePointer<MyStreamPlayer>) -> OSStatu
 //
 func fillALBuffer (player: UnsafeMutablePointer<MyStreamPlayer>, alBuffer: ALuint) {
     
-    // allocate sample buffer
+    // allocate a buffer for the samples
     let sampleBuffer =  UnsafeMutablePointer<UInt16>(malloc(sizeof(UInt16.self) * Int(player.pointee.bufferSizeBytes)))
 
-    // setup the AudioBufferList
+    // setup an AudioBufferList
     var bufferList = AudioBufferList()
     bufferList.mNumberBuffers = 1
     bufferList.mBuffers.mNumberChannels = 1
     bufferList.mBuffers.mDataByteSize = player.pointee.bufferSizeBytes
+    
+    // use the sample buffer as the AudioBufferList's buffer
     bufferList.mBuffers.mData = UnsafeMutablePointer<Void>(sampleBuffer)
+    
     Swift.print("allocated \(player.pointee.bufferSizeBytes) byte buffer for ABL\n")
     
-    // read from ExtAudioFile into sampleBuffer
+    // read from ExtAudioFile into the AudioBufferList (i.e. into the sampleBuffer)
     // TODO: handle end-of-file wraparound
     var framesReadIntoBuffer: UInt32 = 0
     
-    // repeat until the entire Player's buffer has been read
+    // repeat until the AudioBufferList's buffer has been filled
     repeat {
         var framesRead = UInt32(player.pointee.fileLengthFrames) - framesReadIntoBuffer
         
@@ -139,10 +142,10 @@ func fillALBuffer (player: UnsafeMutablePointer<MyStreamPlayer>, alBuffer: ALuin
         
     } while (framesReadIntoBuffer < (player.pointee.bufferSizeBytes / UInt32(sizeof(UInt16.self))))
     
-    // copy from sampleBuffer to AL buffer
+    // copy from the AudioBufferList to the OpenAL buffer
     alBufferData(alBuffer, AL_FORMAT_MONO16, sampleBuffer, ALsizei(player.pointee.bufferSizeBytes), ALsizei(player.pointee.dataFormat.mSampleRate))
     
-    // freee the malloc'd memory
+    // freee the malloc'd memory (the sample buffer)
     free(sampleBuffer)
 }
 //
@@ -230,7 +233,7 @@ alSourceQueueBuffers(player.sources[0],
                      buffers)
 Utility.checkAL(operation: "Couldn't queue buffers on source")
 
-// set up listener
+// set the listener position
 alListener3f (AL_POSITION, 0.0, 0.0, 0.0)
 Utility.checkAL(operation: "Couldn't set listner position")
 
