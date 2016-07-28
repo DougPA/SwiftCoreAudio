@@ -13,7 +13,7 @@ import OpenAL
 
 let kBufferDuration: Double = 0.01          // duration in seconds of a buffer
 let kBufferCount = 8                        // number of buffers
-let kRefreshInterval: CFTimeInterval = 1.0  // interval in seconds between buffer processing
+let kRefreshInterval: CFTimeInterval = 1.0  // interval in seconds between checks for completion
 let kRunTime = 10.0                         // program run time in seconds
 
 let kSampleRate: Double = 24_000.0          // sample rate
@@ -68,9 +68,6 @@ func fillALBuffer (player: UnsafeMutablePointer<MyStreamPlayer>, alBuffer: ALuin
     
     // copy from the AudioBufferList to the OpenAL buffer
     alBufferData(alBuffer, AL_FORMAT_STEREO16, player.pointee.bufferList.mBuffers.mData, ALsizei(player.pointee.bufferSizeBytes), ALsizei(player.pointee.dataFormat.mSampleRate))
-    
-    // freee the malloc'd memory (the sample buffer)
-//    free(sampleBuffer)
 }
 //
 // re-fill an OpenAL buffer
@@ -262,16 +259,15 @@ Swift.print("Playing...\n")
 var startTime: time_t  = time(nil)
 repeat
 {
-    
     // pause
     CFRunLoopRunInMode(CFRunLoopMode.defaultMode, kRefreshInterval, false)
     
 } while (difftime(time(nil), startTime) < kRunTime)
 
-// cleanup
-
+// free the malloc'd memory
 free(sampleBuffer)
 
+// cleanup
 alSourceStop(player.sources[0])
 alDeleteSources(1, player.sources)
 alDeleteBuffers(ALsizei(kBufferCount), buffers)
