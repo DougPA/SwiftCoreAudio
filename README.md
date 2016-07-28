@@ -5,3 +5,5 @@ As I work my way through the excellent book "Learning Core Audio" by Chris Adams
 
 
 NOTE: CH08_AUGraphInput compiles with errors. I haven't worked out (yet) how to access the C++ CARingBuffer from Swift.
+
+NOTE: CH--_OpenALSineWave is not from the book. It's my own combination of CH07_AUGraphSineWave and CH09_OpenALOrbitStream (without the "orbit"). It demonstrates how to use two Apple Extensions to OpenAL. 
