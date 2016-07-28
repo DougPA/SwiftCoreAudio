@@ -5,114 +5,39 @@
 //  Created by Douglas Adams on 7/26/16.
 //
 
-
 import AudioToolbox
 import OpenAL
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Constants
 
-let streamPath = CFStringCreateWithCString(kCFAllocatorDefault,
-                                           "/Library/Audio/Apple Loops/Apple/iLife Sound Effects/Jingles/Kickflip Long.caf",
-                                           CFStringBuiltInEncodings.UTF8.rawValue)
+let kBufferDuration: Double = 0.01          // duration in seconds of a buffer
+let kBufferCount = 8                        // number of buffers
+let kRefreshInterval: CFTimeInterval = 1.0  // interval in seconds between buffer processing
+let kRunTime = 10.0                         // program run time in seconds
 
-let kBufferDuration: UInt32 = 1             // duration in seconds
-let kBufferCount = 3                        // count of buffers
-let kOrbitSpeed: Double = 1                 // speed in seconds
-let kRunTime = 20.0                         // run time in seconds
-
-let kSampleRate: Double = 44_100.0
-let kSineFrequency: Double = 440.0
+let kSampleRate: Double = 24_000.0          // sample rate
+let kSineFrequency: Double = 440.0          // sine wave frequency
 
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Struct definition
 
 struct MyStreamPlayer {
-    var dataFormat = AudioStreamBasicDescription()                      // stream AudioStreamBasicDescription
-    var bufferSizeBytes: UInt32	= 0                                     // buffer size in bytes
-    var fileLengthFrames: Int64 = 0                                     // file length in frames
-    var totalFramesRead: Int64 = 0                                      // number of frames read
-    var sources = [ALuint](repeating: 0, count: 1)                      // OpenAL source handles
-    var extAudioFile: ExtAudioFileRef?                                  // reference to an ExtAudioFile
-    
-    var phase: Double = 0.0
+    var dataFormat = AudioStreamBasicDescription()      // stream AudioStreamBasicDescription
+    var bufferSizeBytes: UInt32	= 0                     // buffer size in bytes
+    var bufferList: AudioBufferList!
+    var sources = [ALuint](repeating: 0, count: 1)      // OpenAL source handles
+    var phase: Double = 0.0                             // current phase of sine wave
 }
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Supporting methods
 
 //
-// calculate and set a new player position
-//
-func updateSourceLocation (player: UnsafeMutablePointer<MyStreamPlayer>) {
-    
-    let theta: Double  = fmod(CFAbsoluteTimeGetCurrent() * kOrbitSpeed, M_PI * 2)
-    let x = ALfloat(3.0 * cos(theta))
-    let y = ALfloat(0.5 * sin (theta))
-    let z = ALfloat(1.0 * sin (theta))
-    
-    Swift.print("x = \(x), y = \(y), z = \(z)\n")
-    
-    alSource3f(player.pointee.sources[0], AL_POSITION, x, y, z)
-}
-//
-//
-//
-//func setupSineWave() {
-//
-//    let kSampleRate = 44100.0
-//    let kSineFrequency = 880.0
-//    
-//    let player = UnsafeMutablePointer<SineWavePlayer>(userData)
-//    
-//    // get the starting phase of the waveform
-//    var phase: Double = player.pointee.phase
-//    
-//    // calculate the length of one cycle (one wavelength)
-//    let cycleLength: Double  = kSampleRate / kSineFrequency
-//    
-//    for frame in 0..<Int(numberOfFrames)
-//    {
-//        // get a reference to each channels data (2 channels assumed)
-//        let channels = UnsafeMutablePointer<Float32>(bufferList.pointee.mBuffers.mData)!
-//        let left = UnsafeMutableBufferPointer<Float32>(start: channels, count: Int(numberOfFrames))
-//        
-//        // populate each channel with the same data
-//        left[frame] = Float32(sin (2 * M_PI * (phase / cycleLength)))
-//        
-//        // increment the current frame number
-//        phase += 1.0
-//        
-//        // the phase repeats going from zero through the cycleLength over and over
-//        if phase > cycleLength { phase -= cycleLength }
-//    }
-//    
-//    // save the current phase as the starting phase for the next iteration
-//    player.pointee.phase = phase
-//    
-//}
-//
-// fill an OpenAL buffer with SineWave data
+// fill an OpenAL buffer with Sine Wave data
 //
 func fillALBuffer (player: UnsafeMutablePointer<MyStreamPlayer>, alBuffer: ALuint) {
-    
-    // allocate a buffer for the samples
-    let sampleBuffer =  UnsafeMutablePointer<UInt16>(malloc(sizeof(UInt16.self) * Int(player.pointee.bufferSizeBytes)))
-    
-    // setup an AudioBufferList
-    var bufferList = AudioBufferList()
-    bufferList.mNumberBuffers = 1
-    bufferList.mBuffers.mNumberChannels = 1
-    bufferList.mBuffers.mDataByteSize = player.pointee.bufferSizeBytes
-    
-    // use the sample buffer as the AudioBufferList's buffer
-    bufferList.mBuffers.mData = UnsafeMutablePointer<Void>(sampleBuffer)
-    
-    Swift.print("allocated \(player.pointee.bufferSizeBytes) byte buffer for ABL\n")
-    
-
-    
     
     // get the starting phase of the waveform
     var phase: Double = player.pointee.phase
@@ -123,15 +48,11 @@ func fillALBuffer (player: UnsafeMutablePointer<MyStreamPlayer>, alBuffer: ALuin
     for frame in 0..<Int(player.pointee.bufferSizeBytes) / sizeof(UInt16.self)
     {
         // get a reference to the channel data (1 channel assumed)
-        let channels = UnsafeMutablePointer<Int16>(bufferList.mBuffers.mData)!
-        let left = UnsafeMutableBufferPointer<Int16>(start: channels, count: Int(player.pointee.bufferSizeBytes) * sizeof(UInt16.self))
+        let channels = UnsafeMutablePointer<Int16>(player.pointee.bufferList.mBuffers.mData)!
+        let left = UnsafeMutableBufferPointer<Int16>(start: channels, count: Int(player.pointee.bufferSizeBytes) / sizeof(UInt16.self))
         
         // populate each channel with the same data
         left[frame] = Int16( sin (2 * M_PI * (phase / cycleLength)) * Double(Int16.max))
-        
-        
-//        Swift.print("\(left[frame])")
-        
         
         // increment the current frame number
         phase += 1.0
@@ -143,15 +64,11 @@ func fillALBuffer (player: UnsafeMutablePointer<MyStreamPlayer>, alBuffer: ALuin
     // save the current phase as the starting phase for the next iteration
     player.pointee.phase = phase
     
-
-    
-    
-    
     // copy from the AudioBufferList to the OpenAL buffer
-    alBufferData(alBuffer, AL_FORMAT_MONO16, sampleBuffer, ALsizei(player.pointee.bufferSizeBytes), ALsizei(player.pointee.dataFormat.mSampleRate))
+    alBufferData(alBuffer, AL_FORMAT_MONO16, player.pointee.bufferList.mBuffers.mData, ALsizei(player.pointee.bufferSizeBytes), ALsizei(player.pointee.dataFormat.mSampleRate))
     
     // freee the malloc'd memory (the sample buffer)
-    free(sampleBuffer)
+//    free(sampleBuffer)
 }
 //
 // re-fill an OpenAL buffer
@@ -163,6 +80,8 @@ func refillALBuffers (player: UnsafeMutablePointer<MyStreamPlayer>) {
     alGetSourcei(player.pointee.sources[0], AL_BUFFERS_PROCESSED, &processed)
     Utility.checkAL(operation: "couldn't get al_buffers_processed")
     
+//    Swift.print("processed = \(processed)")
+    
     // re-fill & re-queue as many buffers as have been processed
     while (processed > 0) {
         var freeBuffer: ALuint = 0
@@ -171,7 +90,7 @@ func refillALBuffers (player: UnsafeMutablePointer<MyStreamPlayer>) {
         alSourceUnqueueBuffers(player.pointee.sources[0], 1, &freeBuffer)
         Utility.checkAL(operation: "couldn't unqueue buffer")
         
-        Swift.print("refilling buffer \(freeBuffer)\n")
+//        Swift.print("refilling buffer \(freeBuffer)\n")
         
         // fill the OpenAL buffer from the player buffer
         fillALBuffer(player: player, alBuffer: freeBuffer)
@@ -180,7 +99,7 @@ func refillALBuffers (player: UnsafeMutablePointer<MyStreamPlayer>) {
         alSourceQueueBuffers(player.pointee.sources[0], 1, &freeBuffer)
         Utility.checkAL(operation: "couldn't queue refilled buffer")
         
-        Swift.print("re-queued buffer \(freeBuffer)\n")
+//        Swift.print("re-queued buffer \(freeBuffer)\n")
         
         // decrement the number of processed buffers
         processed = processed - 1
@@ -190,6 +109,11 @@ func refillALBuffers (player: UnsafeMutablePointer<MyStreamPlayer>) {
 
 //--------------------------------------------------------------------------------------------------
 // MARK: Main
+
+var	bufferDataStaticProc: alBufferDataStaticProcPtr
+
+var sourceAddNotificationProc: alSourceAddNotificationProcPtr
+var sourceNotificationProc: @convention(c) (sid: ALuint, notificationID: ALuint, userData: UnsafeMutablePointer<Void>?) -> Swift.Void
 
 // create the player
 var player = MyStreamPlayer()
@@ -204,8 +128,18 @@ player.dataFormat.mBitsPerChannel = 16                                          
 player.dataFormat.mBytesPerFrame = 2                                                            // 2 bytes per frame
 player.dataFormat.mBytesPerPacket = 2                                                           // 2 bytes per packet
 
-// calcuate the buffer needed (duration * sample rate * bytes per frame)
-player.bufferSizeBytes = kBufferDuration * UInt32(player.dataFormat.mSampleRate) * player.dataFormat.mBytesPerFrame
+// calcuate the buffer needed (buffer duration * sample rate * bytes per frame = number of bytes)
+player.bufferSizeBytes = UInt32(kBufferDuration * player.dataFormat.mSampleRate * Double(player.dataFormat.mBytesPerFrame))
+
+// create & setup an AudioBufferList for the samples
+var audioBuffer = AudioBuffer(mNumberChannels: 1, mDataByteSize: player.bufferSizeBytes, mData: nil)
+player.bufferList = AudioBufferList(mNumberBuffers: 1, mBuffers: audioBuffer)
+
+// allocate a buffer for the samples
+let sampleBuffer =  UnsafeMutablePointer<UInt16>(malloc( Int(player.bufferSizeBytes) ))
+
+// use the sample buffer as the AudioBufferList's buffer
+player.bufferList.mBuffers.mData = UnsafeMutablePointer<Void>(sampleBuffer)
 
 // set up OpenAL buffers
 var alDevice: OpaquePointer
@@ -220,14 +154,10 @@ Utility.checkAL(operation: "Couldn't open AL context")
 alcMakeContextCurrent (alContext)
 Utility.checkAL(operation: "Couldn't make AL context current")
 
+// create kBufferCount OpenAL buffers
 var buffers = [ALuint](repeating: 0, count: kBufferCount)
 alGenBuffers(ALsizei(kBufferCount), &buffers)
 Utility.checkAL(operation: "Couldn't generate buffers")
-
-// do the initial filling of the OpenAL buffers
-for i in 0..<kBufferCount {
-    fillALBuffer(player: &player, alBuffer: buffers[i])
-}
 
 // set up OpenAL source
 alGenSources(1, &player.sources)
@@ -238,8 +168,76 @@ alSourcef(player.sources[0], AL_GAIN, ALfloat(AL_MAX_GAIN))
 Utility.checkAL(operation: "Couldn't set source gain")
 
 // set the initial sound position
-updateSourceLocation(player: &player)
-Utility.checkAL(operation: "Couldn't set initial source position")
+alSource3f(player.sources[0], AL_POSITION, 0.0, 0.0, 0.0)
+Utility.checkAL(operation: "Couldn't set sound position")
+
+// create a closure to use as the callback proc for AL_EXT_SOURCE_NOTIFICATIONS
+//      NOTE: may be called while previous callback is still executing
+//
+sourceNotificationProc = {sid, notificationID, userData in
+
+    // is it an AL_BUFFER_PROCESSED notification?
+    if notificationID == ALuint(AL_BUFFERS_PROCESSED) {
+
+        // YES, refill buffers if needed (enforce sequential order)
+        DispatchQueue.main.async {
+            refillALBuffers (player: UnsafeMutablePointer<MyStreamPlayer>(userData!))
+        }
+    }
+}
+
+// determine if the AL_EXT_SOURCE_NOTIFICATIONS extension is present
+var extName = "AL_EXT_SOURCE_NOTIFICATIONS"
+if alIsExtensionPresent(extName) == ALboolean(AL_TRUE) {
+    
+    // can we get the Proc's address?
+    if let ptr = alGetProcAddress("alSourceAddNotification") {
+        
+        // YES, cast it
+        sourceAddNotificationProc = unsafeBitCast(ptr, to: alSourceAddNotificationProcPtr.self)
+        
+        // set the callback (exit if unsuccessful)
+        let x = sourceAddNotificationProc(player.sources[0], ALuint(AL_BUFFERS_PROCESSED), sourceNotificationProc, &player)
+        if x != AL_NO_ERROR {
+            
+            Swift.print("Couldn't perform alSourceAddNotification")
+            exit(1)
+        }
+    
+    } else {
+        
+        // NO, exit
+        Swift.print("Couldn't get alSourceAddNotification ProcAddress")
+        exit(1)
+    }
+}
+
+// determine if the AL_EXT_STATIC_BUFFER extension is present
+extName = "AL_EXT_STATIC_BUFFER"
+if alIsExtensionPresent("AL_EXT_STATIC_BUFFER") == ALboolean(AL_TRUE) {
+    
+    // can we get the Proc's address?
+    if let ptr = alGetProcAddress("alBufferDataStatic") {
+        
+        // YES, cast it
+        bufferDataStaticProc = unsafeBitCast(ptr, to: alBufferDataStaticProcPtr.self)
+        
+        for i in 0..<kBufferCount {
+            
+            // setup the buffer to use Static data
+            bufferDataStaticProc(ALint(buffers[i]), AL_FORMAT_MONO16, &buffers[i], ALsizei(player.bufferSizeBytes), ALsizei(player.dataFormat.mSampleRate) )
+
+            // do the initial fill of the buffer
+            fillALBuffer(player: &player, alBuffer: buffers[i])
+        }
+
+    } else {
+        
+        // NO, exit
+        Swift.print("Couldn't get alBufferDataStatic ProcAddress")
+        exit(1)
+    }
+}
 
 // queue up the buffers on the source
 alSourceQueueBuffers(player.sources[0],
@@ -262,19 +260,16 @@ Swift.print("Playing...\n")
 var startTime: time_t  = time(nil)
 repeat
 {
-    // get next theta
-    updateSourceLocation(player: &player)
-    Utility.checkAL(operation: "Couldn't set source position")
-    
-    // refill buffers if needed
-    refillALBuffers (player: &player)
     
     // pause
-    CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.1, false)
+    CFRunLoopRunInMode(CFRunLoopMode.defaultMode, kRefreshInterval, false)
     
 } while (difftime(time(nil), startTime) < kRunTime)
 
 // cleanup
+
+free(sampleBuffer)
+
 alSourceStop(player.sources[0])
 alDeleteSources(1, player.sources)
 alDeleteBuffers(ALsizei(kBufferCount), buffers)
